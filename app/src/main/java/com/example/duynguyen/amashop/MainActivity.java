@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
+                //dataSnapshot.getChildren()
             }
 
             @Override
@@ -137,12 +138,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void updateUI(GoogleSignInAccount currentUser) {
         if (currentUser!=null){
-            Log.d(TAG,"this is an existed user");
+            Log.d(TAG,"signed in");
             writeNewUser(currentUser.getId(),currentUser.getDisplayName(),currentUser.getEmail());
             readCurrentUser(currentUser.getId());
         }
         else {
-            Log.d(TAG,"this is a new user");
+            Log.d(TAG,"Erorr sign in google");
         }
     }
 
