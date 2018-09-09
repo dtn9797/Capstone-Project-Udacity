@@ -2,4 +2,8 @@
     <string name="app_name">AmaShop</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+
+    <!--sign in fragment-->
+    <string name="welcome">Welcome.</string>
+    <string name="title">AmaShop Customers. </string>
 </resources>
