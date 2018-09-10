@@ -14,4 +14,8 @@
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
+    <style name="subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

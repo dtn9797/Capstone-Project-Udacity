@@ -6,4 +6,7 @@
     <!--sign in fragment-->
     <string name="welcome">Welcome.</string>
     <string name="title">AmaShop Customers. </string>
+
+    <!--tool bar-->
+    <string name="sign_out">Sign Out</string>
 </resources>
