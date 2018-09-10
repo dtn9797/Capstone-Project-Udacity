@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.example.duynguyen.amashop.utils.NavigationHost;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -91,6 +93,7 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
         }
         else {
             Toast.makeText(getContext(),"Sign in Sucess",Toast.LENGTH_LONG).show();
+            ((NavigationHost)getActivity()).navigateTo(new ProductCatalogueFragment(),true);
         }
     }
 }
