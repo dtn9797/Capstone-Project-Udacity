@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:padding="15dp"
         android:text="Canadian"
-        style="@style/subtitle"
+        style="@style/product_grid_subtitle"
         />
     <View
         android:layout_width="match_parent"

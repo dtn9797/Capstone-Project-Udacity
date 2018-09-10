@@ -9,13 +9,22 @@
 
     </style >
 
-    <style name="title" parent="TextAppearance.AppCompat.Display1">
+    <style name="product_grid_title" parent="TextAppearance.AppCompat.Display1">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
 
-    <style name="subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
+    <style name="product_grid_subtitle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
         <item name="android:textStyle">bold</item>
     </style>
+
+    <!--product_viewholder-->
+    <style name="product_title" parent="TextAppearance.AppCompat.Headline">
+
+    </style>
+    <style name="product_subtitle" parent="TextAppearance.AppCompat.Body2">
+
+    </style>
+
 
 </resources>

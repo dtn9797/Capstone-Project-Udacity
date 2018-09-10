@@ -9,4 +9,7 @@
 
     <!--tool bar-->
     <string name="sign_out">Sign Out</string>
+    <string name="product_image_description">Product Image</string>
+    <string name="product_title_sample">Mov</string>
+    <string name="product_subtitle_sample">Mov adwafafjahhaksdj</string>
 </resources>

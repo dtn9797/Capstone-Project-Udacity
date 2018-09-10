@@ -21,13 +21,13 @@
             android:layout_height="50dp"
             android:text="@string/welcome"
             android:layout_margin="5dp"
-            style="@style/title" />
+            style="@style/product_grid_title" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:text="@string/title"
-            style="@style/title"/>
+            style="@style/product_grid_title"/>
     </LinearLayout>
 
     <com.google.android.gms.common.SignInButton
