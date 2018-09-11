@@ -2,6 +2,7 @@ package com.example.duynguyen.amashop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -12,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 
+import com.example.duynguyen.amashop.model.User;
 import com.example.duynguyen.amashop.utils.NavigationHost;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -19,13 +21,19 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.auth.api.Auth;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SigninFragment extends Fragment implements View.OnClickListener {
     private static final int RC_SIGN_IN = 99;
     private static final String TAG = SigninFragment.class.getSimpleName();
 
+    FirebaseAuth mAuth;
+    DatabaseReference mDatabase;
     GoogleSignInClient mGoogleSignInClient;
 
     @Nullable
@@ -42,6 +50,8 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
                                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(getContext(),gso);
 
+        mAuth = FirebaseAuth.getInstance();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         return view;
     }
@@ -87,14 +97,33 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void updateUI(GoogleSignInAccount googleSignInAccount) {
-        if (googleSignInAccount == null){
+    private void updateUI(GoogleSignInAccount currentUser) {
+        if (currentUser == null){
             Toast.makeText(getContext(),"Sign in Failed",Toast.LENGTH_LONG).show();
         }
         else {
             Toast.makeText(getContext(),"Sign in Sucess",Toast.LENGTH_LONG).show();
+            writeNewUser(currentUser.getId(),currentUser.getDisplayName(),currentUser.getEmail());
             ((NavigationHost)getActivity()).navigateTo(new ProductCatalogueFragment(),true);
         }
+    }
+
+        private void writeNewUser(String userId, String name, String email) {
+        User user = new User(name, email);
+
+        mDatabase.child("users").child(userId).setValue(user);
+    }
+
+
+    private void signOut() {
+        // Google sign out
+        mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(),
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateUI(null);
+                    }
+                });
     }
 }
 
