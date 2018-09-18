@@ -9,12 +9,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.duynguyen.amashop.model.Product;
+import com.example.duynguyen.amashop.utils.NavigationHost;
 import com.example.duynguyen.amashop.utils.ProductGridItemDecoration;
 import com.example.duynguyen.amashop.utils.ProductsAdapter;
 import com.example.duynguyen.amashop.utils.RetrofitClient;
@@ -58,7 +63,14 @@ public class ProductCatalogueFragment extends Fragment {
         }
 
         loadProductData();
+        setUpToolbar(view);
         return view;
+    }
+
+    private void setUpToolbar(View view) {
+        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app_bar);
+        ((MainActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        setHasOptionsMenu(true);
     }
 
     private void loadProductData() {
@@ -78,5 +90,23 @@ public class ProductCatalogueFragment extends Fragment {
                 Log.d(TAG, "Fail to get data ");
             }
         });
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_main,menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.sign_out_button:
+                ((NavigationHost)getActivity()).navigateBack(true);
+                return true;
+        }
+
+        return false;
     }
 }

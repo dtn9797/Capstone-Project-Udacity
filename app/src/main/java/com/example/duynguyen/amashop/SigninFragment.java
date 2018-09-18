@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +22,11 @@ import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.auth.api.Auth;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.Objects;
 
 public class SigninFragment extends Fragment implements View.OnClickListener {
     private static final int RC_SIGN_IN = 99;
@@ -38,17 +38,17 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_signin,container,false);
         SignInButton signInButton = view.findViewById(R.id.sign_in_button);
         signInButton.setSize(SignInButton.SIZE_WIDE);
         signInButton.setOnClickListener(this);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                                .requestIdToken(getString(R.string.default_web_client_id))
+                                .requestIdToken(getString(R.string.default_web_client_id))
                                 .requestEmail()
                                 .build();
-        mGoogleSignInClient = GoogleSignIn.getClient(getContext(),gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(Objects.requireNonNull(getContext()),gso);
 
         mAuth = FirebaseAuth.getInstance();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -104,27 +104,17 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
         else {
             Toast.makeText(getContext(),"Sign in Sucess",Toast.LENGTH_LONG).show();
             writeNewUser(currentUser.getId(),currentUser.getDisplayName(),currentUser.getEmail());
-            ((NavigationHost)getActivity()).navigateTo(new ProductCatalogueFragment(),true);
+            ((NavigationHost) Objects.requireNonNull(getActivity())).navigateTo(new ProductCatalogueFragment(),true);
         }
     }
 
-        private void writeNewUser(String userId, String name, String email) {
+    private void writeNewUser(String userId, String name, String email) {
         User user = new User(name, email);
 
         mDatabase.child("users").child(userId).setValue(user);
     }
 
 
-    private void signOut() {
-        // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(getActivity(),
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
-                    }
-                });
-    }
 }
 
 //
