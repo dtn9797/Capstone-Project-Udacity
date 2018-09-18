@@ -18,4 +18,6 @@
     <string name="connection_error_title">Connection Error</string>
     <string name="connection_error">Failed to get data. Check your connection!</string>
     <string name="reload_button">Reload</string>
+    <!--backdrop-->
+    <string name="polish_brand_0" > BackDrop </string>>
 </resources>

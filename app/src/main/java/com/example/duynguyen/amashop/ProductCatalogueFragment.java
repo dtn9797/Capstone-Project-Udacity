@@ -19,9 +19,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.utils.NavigationHost;
+import com.example.duynguyen.amashop.utils.NavigationIconClickListener;
 import com.example.duynguyen.amashop.utils.ProductGridItemDecoration;
 import com.example.duynguyen.amashop.utils.ProductsAdapter;
 import com.example.duynguyen.amashop.utils.RetrofitClient;
@@ -43,7 +47,7 @@ public class ProductCatalogueFragment extends Fragment {
     public ProductsAdapter mProductsAdapter;
 
     @BindView(R.id.product_grid)
-    NestedScrollView mProductGrid;
+    LinearLayout mProductGrid;
     @BindView(R.id.products_rv)
     RecyclerView mProductsRv;
 
@@ -66,6 +70,12 @@ public class ProductCatalogueFragment extends Fragment {
 
         loadProductData();
         setUpToolbar(view);
+        ((Button)view.findViewById(R.id.polish_brand_0_bt)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG,"Button is clicked");
+            }
+        });
         return view;
     }
 
@@ -73,6 +83,7 @@ public class ProductCatalogueFragment extends Fragment {
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.app_bar);
         ((MainActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
         setHasOptionsMenu(true);
+        toolbar.setNavigationOnClickListener(new NavigationIconClickListener(getContext(), view.findViewById(R.id.product_grid)));
     }
 
     private void loadProductData() {

@@ -2,7 +2,39 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/primaryColor">
+
+    <LinearLayout
+        android:id="@+id/menu_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingTop="100dp">
+
+        <Button
+            android:id="@+id/polish_brand_0_bt"
+            style="@style/menu_item"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="@string/polish_brand_0" />
+
+        <Button
+            android:id="@+id/polish_brand_1_bt"
+            style="@style/menu_item"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="@string/polish_brand_0" />
+
+        <Button
+            android:id="@+id/polish_brand_2_bt"
+            style="@style/menu_item"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="@string/polish_brand_0" />
+
+    </LinearLayout>
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -17,33 +49,37 @@
             app:title="@string/app_name" />
 
     </android.support.design.widget.AppBarLayout>
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="56dp"
-    android:orientation="vertical">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="15dp"
-        android:text="@string/brand_name_sample"
-        style="@style/product_grid_subtitle"
-        />
-    <android.support.v4.widget.NestedScrollView
+
+    <LinearLayout
         android:id="@+id/product_grid"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
         android:elevation="8dp"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/products_rv"
-            android:layout_marginTop="50dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/product_grid_subtitle_tv"
+            style="@style/product_grid_subtitle"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:padding="20dp"
+            android:text="@string/brand_name_sample" />
 
-    </android.support.v4.widget.NestedScrollView>
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-</LinearLayout>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/products_rv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp" />
+
+
+        </android.support.v4.widget.NestedScrollView>
+
+
+    </LinearLayout>
 
 </FrameLayout>

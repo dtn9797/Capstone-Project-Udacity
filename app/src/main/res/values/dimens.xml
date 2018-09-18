@@ -8,4 +8,6 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_margin">8dp</dimen>
     <!--Login Fragment-->
     <dimen name="ll_title_margin">150dp</dimen>
+
+    <dimen name="product_grid_reveal_height">200dp</dimen>
 </resources>
