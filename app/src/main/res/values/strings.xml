@@ -15,4 +15,7 @@
 
     <!--fragment_product_catalogue-->
     <string name="brand_name_sample">Canadian</string>
+    <string name="connection_error_title">Connection Error</string>
+    <string name="connection_error">Failed to get data. Check your connection!</string>
+    <string name="reload_button">Reload</string>
 </resources>

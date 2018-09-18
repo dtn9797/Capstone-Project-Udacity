@@ -1,12 +1,14 @@
 package com.example.duynguyen.amashop;
 
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -87,7 +89,20 @@ public class ProductCatalogueFragment extends Fragment {
 
             @Override
             public void onFailure(@NonNull Call<List<Product>> call, @NonNull Throwable t) {
-                Log.d(TAG, "Fail to get data ");
+                //Show alert dialog
+                Log.e("Error", "Error in retrofit");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(Objects.requireNonNull(getContext()));
+                dialog.setCancelable(false);
+                dialog.setTitle(getString(R.string.connection_error_title));
+                dialog.setMessage(getString(R.string.connection_error));
+                dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        loadProductData();
+                    }
+                });
+                final AlertDialog alert = dialog.create();
+                alert.show();
             }
         });
     }
