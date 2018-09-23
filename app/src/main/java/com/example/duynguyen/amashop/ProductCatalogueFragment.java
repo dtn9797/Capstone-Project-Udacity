@@ -2,12 +2,14 @@ package com.example.duynguyen.amashop;
 
 
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +22,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.utils.NavigationHost;
@@ -41,15 +43,37 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductCatalogueFragment extends Fragment {
+public class ProductCatalogueFragment extends Fragment implements View.OnClickListener {
     public String TAG = ProductCatalogueFragment.class.getSimpleName();
-    private List<Product> data = new ArrayList<>();
+    private ArrayList<? extends Product> data = new ArrayList<>();
     public ProductsAdapter mProductsAdapter;
+    String BRAND0_TYPE = "Vegan";
+    String BRAND1_TYPE = "Natural";
+    String BRAND2_TYPE = "Canadian";
+    String BRAND3_TYPE = "Non-gmo";
+    private NavigationIconClickListener mNavigationIconClickListener;
+    private String mCurrentBrand = "Vegan";
+    private Boolean mCurrentExpandedView = false;
+
+    private static final String DATA_ARRAY_EXTRA = "data_extra";
+    private static final String BRAND_TYPE_EXTRA = "brand_extra";
 
     @BindView(R.id.product_grid)
     LinearLayout mProductGrid;
     @BindView(R.id.products_rv)
     RecyclerView mProductsRv;
+    @BindView(R.id.product_grid_subtitle_tv)
+    TextView subtitleTv;
+    @BindView(R.id.polish_brand_0_bt)
+    Button mBrand0Bt;
+    @BindView(R.id.polish_brand_1_bt)
+    Button mBrand1Bt;
+    @BindView(R.id.polish_brand_2_bt)
+    Button mBrand2Bt;
+    @BindView(R.id.polish_brand_3_bt)
+    Button mBrand3Bt;
+    @BindView(R.id.app_bar)
+    Toolbar mToolBar;
 
     @Nullable
     @Override
@@ -57,7 +81,21 @@ public class ProductCatalogueFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_product_catalogue, container, false);
         ButterKnife.bind(this, view);
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL,false);
+        if (savedInstanceState == null){
+            loadProductData(mCurrentBrand);
+        }
+        setUpView();
+        setUpToolbar(view);
+        return view;
+    }
+
+    private void setUpView() {
+        mBrand0Bt.setOnClickListener(this);
+        mBrand1Bt.setOnClickListener(this);
+        mBrand2Bt.setOnClickListener(this);
+        mBrand3Bt.setOnClickListener(this);
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
         mProductsAdapter = new ProductsAdapter(getContext());
         ProductGridItemDecoration productGridItemDecoration = new ProductGridItemDecoration(80, 50);
 
@@ -67,33 +105,37 @@ public class ProductCatalogueFragment extends Fragment {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             mProductGrid.setBackground(Objects.requireNonNull(getContext()).getDrawable(R.drawable.product_grid_background_shape));
         }
-
-        loadProductData();
-        setUpToolbar(view);
-        ((Button)view.findViewById(R.id.polish_brand_0_bt)).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG,"Button is clicked");
-            }
-        });
-        return view;
     }
 
     private void setUpToolbar(View view) {
-        Toolbar toolbar = (Toolbar) view.findViewById(R.id.app_bar);
-        ((MainActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(toolbar);
+        Drawable openIconId = ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_black_24dp);
+        Drawable closeIconId = ContextCompat.getDrawable(getContext(), R.drawable.ic_close_black_24dp);
+        mNavigationIconClickListener = new NavigationIconClickListener(getContext(), mProductGrid, openIconId, closeIconId, false);
+        ((MainActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolBar);
         setHasOptionsMenu(true);
-        toolbar.setNavigationOnClickListener(new NavigationIconClickListener(getContext(), view.findViewById(R.id.product_grid)));
+        mToolBar.setNavigationOnClickListener(mNavigationIconClickListener);
+
     }
 
-    private void loadProductData() {
+    private void loadProductData(String brand) {
         RetrofitInterface retrofitInterface = RetrofitClient.getClient().create(RetrofitInterface.class);
-        Call<List<Product>> call = retrofitInterface.get_products("nail_polish");
+        Call<List<Product>> call;
+
+        if (brand.equals(BRAND1_TYPE)) {
+            call = retrofitInterface.get_products_by_tag("nail_polish", BRAND1_TYPE);
+        } else if (brand.equals(BRAND2_TYPE)) {
+            call = retrofitInterface.get_products_by_tag("nail_polish", BRAND2_TYPE);
+        } else if (brand.equals(BRAND3_TYPE)) {
+            call = retrofitInterface.get_products_by_tag("nail_polish", BRAND3_TYPE);
+        } else {
+            call = retrofitInterface.get_products_by_tag("nail_polish", BRAND0_TYPE);
+        }
+
         call.enqueue(new Callback<List<Product>>() {
             @Override
             public void onResponse(@NonNull Call<List<Product>> call, @NonNull Response<List<Product>> response) {
-                data = response.body();
-                mProductsAdapter.setData(data);
+                data = (ArrayList<? extends Product>) response.body();
+                mProductsAdapter.setData((List<Product>) data);
                 Log.d(TAG, "Successfully get data ");
 
             }
@@ -109,7 +151,7 @@ public class ProductCatalogueFragment extends Fragment {
                 dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        loadProductData();
+                        loadProductData(BRAND0_TYPE);
                     }
                 });
                 final AlertDialog alert = dialog.create();
@@ -118,9 +160,35 @@ public class ProductCatalogueFragment extends Fragment {
         });
     }
 
+    private void performMenuItemClick(String brandType) {
+        loadProductData(brandType);
+        subtitleTv.setText(brandType);
+        mCurrentBrand = brandType;
+        mNavigationIconClickListener.click();
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelableArrayList(DATA_ARRAY_EXTRA, (ArrayList<? extends Parcelable>) data);
+        outState.putString(BRAND_TYPE_EXTRA,mCurrentBrand);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState!=null){
+            data = savedInstanceState.getParcelableArrayList(DATA_ARRAY_EXTRA);
+            mCurrentBrand = savedInstanceState.getString(BRAND_TYPE_EXTRA);
+            mProductsAdapter.setData((List<Product>) data);
+            subtitleTv.setText(mCurrentBrand);
+        }
+
+    }
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_main,menu);
+        inflater.inflate(R.menu.menu_main, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
@@ -129,10 +197,31 @@ public class ProductCatalogueFragment extends Fragment {
         int id = item.getItemId();
         switch (id) {
             case R.id.sign_out_button:
-                ((NavigationHost)getActivity()).navigateBack(true);
+                ((NavigationHost) getActivity()).navigateBack(true);
                 return true;
         }
 
         return false;
+    }
+
+    @Override
+    public void onClick(View v) {
+
+        switch (v.getId()) {
+            case R.id.polish_brand_0_bt:
+                performMenuItemClick(BRAND0_TYPE);
+
+                break;
+            case R.id.polish_brand_1_bt:
+                performMenuItemClick(BRAND1_TYPE);
+                break;
+            case R.id.polish_brand_2_bt:
+                performMenuItemClick(BRAND2_TYPE);
+                break;
+            case R.id.polish_brand_3_bt:
+                performMenuItemClick(BRAND3_TYPE);
+                break;
+
+        }
     }
 }

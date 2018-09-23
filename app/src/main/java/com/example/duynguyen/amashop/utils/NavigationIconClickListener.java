@@ -27,39 +27,52 @@ public class NavigationIconClickListener implements View.OnClickListener {
     private boolean backdropShown = false;
     private Drawable openIcon;
     private Drawable closeIcon;
+    private View mView;
 
-    public NavigationIconClickListener(Context context, View sheet) {
-        this(context, sheet, null);
-    }
-
-    NavigationIconClickListener(Context context, View sheet, @Nullable Interpolator interpolator) {
-        this(context, sheet, interpolator, null, null);
+    public NavigationIconClickListener(Context context, View sheet,Drawable openIcon,Drawable closeIcon,boolean backdropShown) {
+        this(context, sheet, null, openIcon,closeIcon, backdropShown);
     }
 
     NavigationIconClickListener(
             Context context, View sheet, @Nullable Interpolator interpolator,
-            @Nullable Drawable openIcon, @Nullable Drawable closeIcon) {
+            @Nullable Drawable openIcon, @Nullable Drawable closeIcon, @Nullable boolean backdropShown) {
         this.context = context;
         this.sheet = sheet;
         this.interpolator = interpolator;
         this.openIcon = openIcon;
         this.closeIcon = closeIcon;
+        this.backdropShown = backdropShown;
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         ((Activity) context).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         height = displayMetrics.heightPixels;
     }
 
+    public void click () {
+        performAnimate(null);
+    }
+
+    public boolean isBackdropShown() {
+        return backdropShown;
+    }
+
     @Override
     public void onClick(View view) {
+        performAnimate(view);
+    }
+
+    private void performAnimate(View view) {
         backdropShown = !backdropShown;
+        if (view != null) {
+            mView = view;
+        }
 
         // Cancel the existing animations
         animatorSet.removeAllListeners();
         animatorSet.end();
         animatorSet.cancel();
 
-        updateIcon(view);
+        updateIcon(mView);
 
         final int translateY = height -
                 context.getResources().getDimensionPixelSize(R.dimen.product_grid_reveal_height);

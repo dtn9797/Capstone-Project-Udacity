@@ -19,5 +19,8 @@
     <string name="connection_error">Failed to get data. Check your connection!</string>
     <string name="reload_button">Reload</string>
     <!--backdrop-->
-    <string name="polish_brand_0" > BackDrop </string>>
+    <string name="polish_brand_0" >Vegan</string>
+    <string name="polish_brand_1" >Natural</string>
+    <string name="polish_brand_2" >Canadian</string>
+    <string name="polish_brand_3" >Non-gmo</string>
 </resources>

@@ -25,14 +25,20 @@
             style="@style/menu_item"
             android:layout_width="match_parent"
             android:layout_height="37dp"
-            android:text="@string/polish_brand_0" />
+            android:text="@string/polish_brand_1" />
 
         <Button
             android:id="@+id/polish_brand_2_bt"
             style="@style/menu_item"
             android:layout_width="match_parent"
             android:layout_height="37dp"
-            android:text="@string/polish_brand_0" />
+            android:text="@string/polish_brand_2" />
+        <Button
+            android:id="@+id/polish_brand_3_bt"
+            style="@style/menu_item"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:text="@string/polish_brand_3" />
 
     </LinearLayout>
 
