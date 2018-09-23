@@ -1,11 +1,16 @@
 
 package com.example.duynguyen.amashop.model;
 
+import java.io.Serializable;
 import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.os.Parcelable.Creator;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product {
+public class Product implements Serializable, Parcelable
+{
 
     @SerializedName("id")
     @Expose
@@ -64,6 +69,48 @@ public class Product {
     @SerializedName("product_colors")
     @Expose
     private List<ProductColor> productColors = null;
+    public final static Parcelable.Creator<Product> CREATOR = new Creator<Product>() {
+
+
+        @SuppressWarnings({
+                "unchecked"
+        })
+        public Product createFromParcel(Parcel in) {
+            return new Product(in);
+        }
+
+        public Product[] newArray(int size) {
+            return (new Product[size]);
+        }
+
+    }
+            ;
+    private final static long serialVersionUID = 4971986187473533398L;
+
+    protected Product(Parcel in) {
+        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
+        this.brand = ((String) in.readValue((String.class.getClassLoader())));
+        this.name = ((String) in.readValue((String.class.getClassLoader())));
+        this.price = ((String) in.readValue((String.class.getClassLoader())));
+        this.priceSign = ((String) in.readValue((String.class.getClassLoader())));
+        this.currency = ((String) in.readValue((String.class.getClassLoader())));
+        this.imageLink = ((String) in.readValue((String.class.getClassLoader())));
+        this.productLink = ((String) in.readValue((String.class.getClassLoader())));
+        this.websiteLink = ((String) in.readValue((String.class.getClassLoader())));
+        this.description = ((String) in.readValue((String.class.getClassLoader())));
+        this.rating = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.category = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.productType = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.tagList, (java.lang.Object.class.getClassLoader()));
+        this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
+        this.updatedAt = ((String) in.readValue((String.class.getClassLoader())));
+        this.productApiUrl = ((String) in.readValue((String.class.getClassLoader())));
+        this.apiFeaturedImage = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.productColors, (com.example.duynguyen.amashop.model.ProductColor.class.getClassLoader()));
+    }
+
+    public Product() {
+    }
 
     public Integer getId() {
         return id;
@@ -215,6 +262,32 @@ public class Product {
 
     public void setProductColors(List<ProductColor> productColors) {
         this.productColors = productColors;
+    }
+
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(id);
+        dest.writeValue(brand);
+        dest.writeValue(name);
+        dest.writeValue(price);
+        dest.writeValue(priceSign);
+        dest.writeValue(currency);
+        dest.writeValue(imageLink);
+        dest.writeValue(productLink);
+        dest.writeValue(websiteLink);
+        dest.writeValue(description);
+        dest.writeValue(rating);
+        dest.writeValue(category);
+        dest.writeValue(productType);
+        dest.writeList(tagList);
+        dest.writeValue(createdAt);
+        dest.writeValue(updatedAt);
+        dest.writeValue(productApiUrl);
+        dest.writeValue(apiFeaturedImage);
+        dest.writeList(productColors);
+    }
+
+    public int describeContents() {
+        return  0;
     }
 
 }

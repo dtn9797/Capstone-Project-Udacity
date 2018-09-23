@@ -19,9 +19,15 @@ import java.util.List;
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.ProductsVH> {
     private Context mContext;
     private List<Product> mData = new ArrayList<>();
+    protected static ItemListener mItemClickListener;
 
-    public ProductsAdapter(Context mContext) {
+    public ProductsAdapter(Context mContext, ItemListener itemListener) {
         this.mContext = mContext;
+        mItemClickListener = itemListener;
+    }
+
+    public interface ItemListener {
+        void onProductItemClick(int pos);
     }
 
     public void setData (List<Product> data){
@@ -38,7 +44,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
 
     @Override
     public void onBindViewHolder(@NonNull ProductsVH holder, int position) {
-        holder.setData(mData.get(position));
+        holder.setData(mData.get(position),position);
     }
 
     @Override
@@ -46,23 +52,31 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         return mData.size();
     }
 
-    public class ProductsVH extends RecyclerView.ViewHolder {
+    public class ProductsVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
         TextView titleTv;
         TextView subtitleTv;
+        int pos;
 
         ProductsVH(View itemView) {
             super(itemView);
 
+            itemView.setOnClickListener(this);
             imageView = itemView.findViewById(R.id.product_iv);
             titleTv = itemView.findViewById(R.id.product_title_tv);
             subtitleTv = itemView.findViewById(R.id.product_subtitle_tv);
         }
 
-        public void setData (Product data){
+        public void setData (Product data, int pos){
             Picasso.get().load(data.getImageLink()).into(imageView);
             titleTv.setText(data.getBrand());
             titleTv.setText(data.getDescription());
+            this.pos = pos;
+        }
+
+        @Override
+        public void onClick(View v) {
+            mItemClickListener.onProductItemClick(pos);
         }
     }
 }

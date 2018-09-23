@@ -2,6 +2,7 @@ package com.example.duynguyen.amashop;
 
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.utils.NavigationHost;
@@ -43,7 +45,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductCatalogueFragment extends Fragment implements View.OnClickListener {
+public class ProductCatalogueFragment extends Fragment implements View.OnClickListener, ProductsAdapter.ItemListener {
     public String TAG = ProductCatalogueFragment.class.getSimpleName();
     private ArrayList<? extends Product> data = new ArrayList<>();
     public ProductsAdapter mProductsAdapter;
@@ -96,7 +98,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         mBrand3Bt.setOnClickListener(this);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
-        mProductsAdapter = new ProductsAdapter(getContext());
+        mProductsAdapter = new ProductsAdapter(getContext(),this);
         ProductGridItemDecoration productGridItemDecoration = new ProductGridItemDecoration(80, 50);
 
         mProductsRv.setLayoutManager(gridLayoutManager);
@@ -223,5 +225,12 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
                 break;
 
         }
+    }
+
+    @Override
+    public void onProductItemClick(int pos) {
+        Toast.makeText(getContext(),"Product Item is clicked at "+pos,Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(),DetailActivity.class);
+        startActivity(intent);
     }
 }
