@@ -1,6 +1,7 @@
 package com.example.duynguyen.amashop;
 
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,7 +22,10 @@ public class MainActivity extends AppCompatActivity {
                 imageButton.setSelected(!imageButton.isSelected());
                 imageButton.setImageDrawable(getDrawable(R.drawable.ic_check_black_24dp));
 //                imageButton.setImageDrawable(null);
-                imageButton.setBackgroundColor(getColor(R.color.colorAccent));
+                GradientDrawable gradientDrawable = new GradientDrawable();
+                gradientDrawable.setColor(getColor(R.color.colorAccent));
+                gradientDrawable.setCornerRadius(150);
+                imageButton.setBackground(gradientDrawable);
 
             }
         });
