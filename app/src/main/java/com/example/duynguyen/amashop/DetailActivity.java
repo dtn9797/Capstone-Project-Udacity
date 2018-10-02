@@ -1,5 +1,6 @@
 package com.example.duynguyen.amashop;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -14,8 +15,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.duynguyen.amashop.model.Product;
 import com.ramotion.fluidslider.FluidSlider;
+
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +29,7 @@ public class DetailActivity extends AppCompatActivity {
 
     public final static String TAG = DetailActivity.class.getSimpleName();
     public final static String PRODUCT_EXTRA = "product";
+    private Product product ;
 
     @BindView(R.id.app_bar)
     Toolbar toolbar;
@@ -50,10 +56,20 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
         ButterKnife.bind(this);
-
         setUpToolbar();
 
+        Intent intent = getIntent();
+        if (intent == null) {
+            closeOnError();
+        }
+        product = intent.getParcelableExtra(PRODUCT_EXTRA);
 
+
+    }
+
+    private void closeOnError() {
+        finish();
+        Toast.makeText(this, getString(R.string.close_on_intent_error), Toast.LENGTH_SHORT).show();
     }
 
     private void setUpToolbar() {

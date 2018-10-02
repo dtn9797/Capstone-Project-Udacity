@@ -32,4 +32,5 @@
     <string name="add_cart_title">Add To Cart</string>
     <string name="colors_title">Colors</string>
     <string name="detail_activity_title">Product Detail</string>
+    <string name="close_on_intent_error">No data is found</string>
 </resources>

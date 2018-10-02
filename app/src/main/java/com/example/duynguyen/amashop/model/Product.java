@@ -1,16 +1,15 @@
 
 package com.example.duynguyen.amashop.model;
 
-import java.io.Serializable;
-import java.util.List;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
+
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Product implements Serializable, Parcelable
-{
+public class Product implements Parcelable {
 
     @SerializedName("id")
     @Expose
@@ -44,16 +43,16 @@ public class Product implements Serializable, Parcelable
     private String description;
     @SerializedName("rating")
     @Expose
-    private Object rating;
+    private Double rating;
     @SerializedName("category")
     @Expose
-    private Object category;
+    private String category;
     @SerializedName("product_type")
     @Expose
     private String productType;
     @SerializedName("tag_list")
     @Expose
-    private List<Object> tagList = null;
+    private List<String> tagList = null;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -69,48 +68,6 @@ public class Product implements Serializable, Parcelable
     @SerializedName("product_colors")
     @Expose
     private List<ProductColor> productColors = null;
-    public final static Parcelable.Creator<Product> CREATOR = new Creator<Product>() {
-
-
-        @SuppressWarnings({
-                "unchecked"
-        })
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
-        }
-
-        public Product[] newArray(int size) {
-            return (new Product[size]);
-        }
-
-    }
-            ;
-    private final static long serialVersionUID = 4971986187473533398L;
-
-    protected Product(Parcel in) {
-        this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
-        this.brand = ((String) in.readValue((String.class.getClassLoader())));
-        this.name = ((String) in.readValue((String.class.getClassLoader())));
-        this.price = ((String) in.readValue((String.class.getClassLoader())));
-        this.priceSign = ((String) in.readValue((String.class.getClassLoader())));
-        this.currency = ((String) in.readValue((String.class.getClassLoader())));
-        this.imageLink = ((String) in.readValue((String.class.getClassLoader())));
-        this.productLink = ((String) in.readValue((String.class.getClassLoader())));
-        this.websiteLink = ((String) in.readValue((String.class.getClassLoader())));
-        this.description = ((String) in.readValue((String.class.getClassLoader())));
-        this.rating = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.category = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.productType = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.tagList, (java.lang.Object.class.getClassLoader()));
-        this.createdAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.updatedAt = ((String) in.readValue((String.class.getClassLoader())));
-        this.productApiUrl = ((String) in.readValue((String.class.getClassLoader())));
-        this.apiFeaturedImage = ((String) in.readValue((String.class.getClassLoader())));
-        in.readList(this.productColors, (com.example.duynguyen.amashop.model.ProductColor.class.getClassLoader()));
-    }
-
-    public Product() {
-    }
 
     public Integer getId() {
         return id;
@@ -192,19 +149,19 @@ public class Product implements Serializable, Parcelable
         this.description = description;
     }
 
-    public Object getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(Object rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
-    public Object getCategory() {
+    public String getCategory() {
         return category;
     }
 
-    public void setCategory(Object category) {
+    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -216,11 +173,11 @@ public class Product implements Serializable, Parcelable
         this.productType = productType;
     }
 
-    public List<Object> getTagList() {
+    public List<String> getTagList() {
         return tagList;
     }
 
-    public void setTagList(List<Object> tagList) {
+    public void setTagList(List<String> tagList) {
         this.tagList = tagList;
     }
 
@@ -264,30 +221,70 @@ public class Product implements Serializable, Parcelable
         this.productColors = productColors;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(id);
-        dest.writeValue(brand);
-        dest.writeValue(name);
-        dest.writeValue(price);
-        dest.writeValue(priceSign);
-        dest.writeValue(currency);
-        dest.writeValue(imageLink);
-        dest.writeValue(productLink);
-        dest.writeValue(websiteLink);
-        dest.writeValue(description);
-        dest.writeValue(rating);
-        dest.writeValue(category);
-        dest.writeValue(productType);
-        dest.writeList(tagList);
-        dest.writeValue(createdAt);
-        dest.writeValue(updatedAt);
-        dest.writeValue(productApiUrl);
-        dest.writeValue(apiFeaturedImage);
-        dest.writeList(productColors);
-    }
 
+    @Override
     public int describeContents() {
-        return  0;
+        return 0;
     }
 
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.brand);
+        dest.writeString(this.name);
+        dest.writeString(this.price);
+        dest.writeString(this.priceSign);
+        dest.writeString(this.currency);
+        dest.writeString(this.imageLink);
+        dest.writeString(this.productLink);
+        dest.writeString(this.websiteLink);
+        dest.writeString(this.description);
+        dest.writeValue(this.rating);
+        dest.writeString(this.category);
+        dest.writeString(this.productType);
+        dest.writeStringList(this.tagList);
+        dest.writeString(this.createdAt);
+        dest.writeString(this.updatedAt);
+        dest.writeString(this.productApiUrl);
+        dest.writeString(this.apiFeaturedImage);
+        dest.writeList(this.productColors);
+    }
+
+    public Product() {
+    }
+
+    protected Product(Parcel in) {
+        this.id = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.brand = in.readString();
+        this.name = in.readString();
+        this.price = in.readString();
+        this.priceSign = in.readString();
+        this.currency = in.readString();
+        this.imageLink = in.readString();
+        this.productLink = in.readString();
+        this.websiteLink = in.readString();
+        this.description = in.readString();
+        this.rating = (Double) in.readValue(Double.class.getClassLoader());
+        this.category = in.readString();
+        this.productType = in.readString();
+        this.tagList = in.createStringArrayList();
+        this.createdAt = in.readString();
+        this.updatedAt = in.readString();
+        this.productApiUrl = in.readString();
+        this.apiFeaturedImage = in.readString();
+        this.productColors = new ArrayList<ProductColor>();
+        in.readList(this.productColors, ProductColor.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        @Override
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        @Override
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }
