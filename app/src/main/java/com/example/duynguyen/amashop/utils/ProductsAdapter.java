@@ -70,7 +70,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         public void setData (Product data, int pos){
             Picasso.get().load(data.getImageLink()).into(imageView);
             titleTv.setText(data.getBrand());
-            titleTv.setText(data.getDescription());
+            subtitleTv.setText(data.getName());
             this.pos = pos;
         }
 

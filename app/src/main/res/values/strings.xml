@@ -26,7 +26,7 @@
     <!--detail activity-->
     <string name="description_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean congue maximus mauris, in congue mi efficitur ac. Suspendisse id sapien dui. Nunc orci libero, condimentum et finibus mollis, mattis imperdiet dui. Phasellus facilisis massa quam, sed blandit lacus luctus sit amet. Etiam volutpat diam quis lacus maximus, quis scelerisque diam accumsan. Phasellus et eros nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse accumsan iaculis massa vel facilisis. Suspendisse vitae tempor ex.</string>
     <string name="detail_product_title_sample">OPFIADAFADFGSD</string>
-    <string name="detail_price_sample">$200</string>
+    <string name="detail_price_sample">$%s</string>
     <string name="image_color_description">Image Color</string>
     <string name="amount_title">Amount</string>
     <string name="add_cart_title">Add To Cart</string>

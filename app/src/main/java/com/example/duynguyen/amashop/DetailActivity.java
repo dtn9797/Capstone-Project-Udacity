@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.duynguyen.amashop.model.Product;
 import com.ramotion.fluidslider.FluidSlider;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -63,6 +64,24 @@ public class DetailActivity extends AppCompatActivity {
             closeOnError();
         }
         product = intent.getParcelableExtra(PRODUCT_EXTRA);
+        
+        setupView();
+
+
+    }
+
+    private void setupView() {
+        Picasso.get().load(product.getImageLink()).into(productIv);
+        titleTv.setText(product.getName());
+        String price = String.format(getResources().getString(R.string.detail_price_sample), product.getPrice());
+        priceTv.setText(price);
+        try {
+            ratingBar.setRating(product.getRating().intValue());
+        }
+        catch (NullPointerException ignored){
+            ratingBar.setVisibility(View.GONE);
+        }
+        descriptionTv.setText(product.getDescription());
 
 
     }
