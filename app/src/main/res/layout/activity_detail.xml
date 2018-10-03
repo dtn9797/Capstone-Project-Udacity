@@ -12,9 +12,9 @@
             android:id="@+id/app_bar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
+            app:elevation="4dp"
             app:navigationIcon="@drawable/ic_close_black_24dp"
-            app:title="@string/detail_activity_title"
-            app:elevation="4dp"/>
+            app:title="@string/detail_activity_title" />
     </android.support.design.widget.AppBarLayout>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -89,39 +89,33 @@
 
             <TextView
                 style="@style/product_title"
+                android:id="@+id/color_title_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:text="@string/colors_title" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/colors_ll"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/circle"
-                    android:contentDescription="@string/image_color_description" />
+                <LinearLayout
+                    android:id="@+id/colors_ll"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/circle"
-                    android:contentDescription="@string/image_color_description" />
+                    <!--<ImageView-->
+                    <!--android:id="@+id/color_iv"-->
+                    <!--android:layout_width="40dp"-->
+                    <!--android:layout_height="40dp"-->
+                    <!--android:layout_margin="10dp"-->
+                    <!--android:background="@drawable/circle"-->
+                    <!--android:contentDescription="@string/image_color_description" />-->
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="10dp"
-                    android:background="@drawable/circle"
-                    android:contentDescription="@string/image_color_description" />
-            </LinearLayout>
+                </LinearLayout>
+            </HorizontalScrollView>
 
             <TextView
                 style="@style/product_title"
@@ -142,8 +136,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_margin="50dp"
-                android:gravity="center"
                 android:background="@color/white"
+                android:gravity="center"
                 android:text="@string/add_cart_title" />
 
         </LinearLayout>

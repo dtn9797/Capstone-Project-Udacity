@@ -15,4 +15,6 @@
 
     <color name="productGridBackgroundColor">#FFFBFA</color>
     <color name="white">#ffffff</color>
+
+    <color name="productColor">#000000</color>
 </resources>
