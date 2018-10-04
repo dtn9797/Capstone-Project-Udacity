@@ -104,7 +104,11 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
         else {
             Toast.makeText(getContext(),"Sign in Sucess",Toast.LENGTH_LONG).show();
             writeNewUser(currentUser.getId(),currentUser.getDisplayName(),currentUser.getEmail());
-            ((NavigationHost) Objects.requireNonNull(getActivity())).navigateTo(new ProductCatalogueFragment(),true);
+            Bundle bundle = new Bundle();
+            bundle.putString(ProductCatalogueFragment.USER_ID_EXTRA,currentUser.getId());
+            ProductCatalogueFragment productCatalogueFragment = new ProductCatalogueFragment();
+            productCatalogueFragment.setArguments(bundle);
+            ((NavigationHost) Objects.requireNonNull(getActivity())).navigateTo(productCatalogueFragment,true);
         }
     }
 

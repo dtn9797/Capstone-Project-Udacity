@@ -55,10 +55,12 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
     String BRAND3_TYPE = "Non-gmo";
     private NavigationIconClickListener mNavigationIconClickListener;
     private String mCurrentBrand = "Vegan";
+    private String mCurrentUserId;
     private Boolean mCurrentExpandedView = false;
 
     private static final String DATA_ARRAY_EXTRA = "data_extra";
     private static final String BRAND_TYPE_EXTRA = "brand_extra";
+    public static final String USER_ID_EXTRA = "id";
 
     @BindView(R.id.product_grid)
     LinearLayout mProductGrid;
@@ -84,6 +86,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         ButterKnife.bind(this, view);
 
         if (savedInstanceState == null){
+            mCurrentUserId = getArguments().getString(USER_ID_EXTRA);
             loadProductData(mCurrentBrand);
         }
         setUpView();
@@ -174,6 +177,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(DATA_ARRAY_EXTRA, (ArrayList<? extends Parcelable>) data);
         outState.putString(BRAND_TYPE_EXTRA,mCurrentBrand);
+        outState.putString(USER_ID_EXTRA,mCurrentUserId);
     }
 
     @Override
@@ -184,6 +188,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
             mCurrentBrand = savedInstanceState.getString(BRAND_TYPE_EXTRA);
             mProductsAdapter.setData((List<Product>) data);
             subtitleTv.setText(mCurrentBrand);
+            mCurrentUserId = savedInstanceState.getString(USER_ID_EXTRA);
         }
 
     }
@@ -232,6 +237,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         Toast.makeText(getContext(),"Product Item is clicked at "+pos,Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(),DetailActivity.class);
         intent.putExtra(DetailActivity.PRODUCT_EXTRA, (Parcelable) data.get(pos));
+        intent.putExtra(DetailActivity.USER_ID_EXTRA, mCurrentUserId);
         startActivity(intent);
     }
 }

@@ -38,16 +38,18 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
     public final static String TAG = DetailActivity.class.getSimpleName();
     private Product product;
-    private int currentAmount = -1;
-    private int currentColorIndex = -1;
+    private int mCurrentAmount = -1;
+    private int mCurrentColorIndex = -1;
     private ArrayList<Integer> colorButtonIds = new ArrayList<>();
-    private Integer colorBtnUnfocusId;
+    private Integer mColorBtnUnfocusId;
+    private String mCurrentUserId;
 
 
     public final static String PRODUCT_EXTRA = "product";
     public final static String AMOUNT_EXTRA = "amount";
     public final static String COLOR_INDEX_EXTRA = "color";
     public final static String SCROLL_POSITION_EXTRA = "scroll";
+    public static final String USER_ID_EXTRA = "id";
 
     @BindView(R.id.app_bar)
     Toolbar toolbar;
@@ -81,8 +83,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         if (savedInstanceState != null) {
             product = savedInstanceState.getParcelable(PRODUCT_EXTRA);
-            currentAmount = savedInstanceState.getInt(AMOUNT_EXTRA);
-            currentColorIndex = savedInstanceState.getInt(COLOR_INDEX_EXTRA);
+            mCurrentAmount = savedInstanceState.getInt(AMOUNT_EXTRA);
+            mCurrentColorIndex = savedInstanceState.getInt(COLOR_INDEX_EXTRA);
+            mCurrentUserId = savedInstanceState.getString(USER_ID_EXTRA);
             final int[] scrollPositions = savedInstanceState.getIntArray(SCROLL_POSITION_EXTRA);
             if(scrollPositions != null)
                 parentSv.post(new Runnable() {
@@ -96,6 +99,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 closeOnError();
             }
             product = intent.getParcelableExtra(PRODUCT_EXTRA);
+            mCurrentUserId = intent.getStringExtra(USER_ID_EXTRA);
         }
         setUpToolbar();
         setupView();
@@ -136,7 +140,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             colorButton.setId(colorButtonId);
             colorButtonIds.add(colorButtonId);
             if(i==0) {
-                colorBtnUnfocusId = colorButtonIds.get(0);
+                mColorBtnUnfocusId = colorButtonIds.get(0);
             }
 
             colorButton.setLayoutParams(lp);
@@ -146,8 +150,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
             colorsLl.addView(colorButton);
 
-            if (currentColorIndex == i) {
-                setFocus(colorBtnUnfocusId, colorButtonId);
+            if (mCurrentColorIndex == i) {
+                setFocus(mColorBtnUnfocusId, colorButtonId);
             }
 
         }
@@ -157,8 +161,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 R.array.amount, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         amountSpinner.setAdapter(adapter);
-        if (currentAmount != -1) {
-            amountSpinner.setSelection(currentAmount - 1);
+        if (mCurrentAmount != -1) {
+            amountSpinner.setSelection(mCurrentAmount - 1);
         }
         amountSpinner.setOnItemSelectedListener(this);
 
@@ -184,7 +188,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         ImageButton unFocusButton = findViewById(btnUnfocusId);
         unFocusButton.setImageDrawable(null);
         focusButton.setImageDrawable(getDrawable(R.drawable.ic_check_black_24dp));
-        this.colorBtnUnfocusId = focusButton.getId();
+        this.mColorBtnUnfocusId = focusButton.getId();
     }
 
     @Override
@@ -208,16 +212,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < colorButtonIds.size(); i++) {
             if (id == colorButtonIds.get(i)) {
                 Toast.makeText(this, "Button is selected", Toast.LENGTH_SHORT).show();
-                currentColorIndex = i;
-                setFocus(this.colorBtnUnfocusId, colorButtonIds.get(i));
+                mCurrentColorIndex = i;
+                setFocus(this.mColorBtnUnfocusId, colorButtonIds.get(i));
             }
         }
     }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        currentAmount = position + 1;
-        Toast.makeText(this, "The item amount is " + String.valueOf(currentAmount), Toast.LENGTH_SHORT).show();
+        mCurrentAmount = position + 1;
+        Toast.makeText(this, "The item amount is " + String.valueOf(mCurrentAmount), Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -229,8 +233,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable(PRODUCT_EXTRA, product);
-        outState.putInt(AMOUNT_EXTRA, currentAmount);
-        outState.putInt(COLOR_INDEX_EXTRA, currentColorIndex);
+        outState.putInt(AMOUNT_EXTRA, mCurrentAmount);
+        outState.putInt(COLOR_INDEX_EXTRA, mCurrentColorIndex);
+        outState.putString(USER_ID_EXTRA,mCurrentUserId);
         outState.putIntArray("SCROLL_POSITION",
                 new int[]{ parentSv.getScrollX(), parentSv.getScrollY()});
     }
