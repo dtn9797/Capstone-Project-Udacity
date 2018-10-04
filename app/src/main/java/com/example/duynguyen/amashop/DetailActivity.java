@@ -1,10 +1,12 @@
 package com.example.duynguyen.amashop;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -24,8 +26,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.duynguyen.amashop.model.Order;
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.model.ProductColor;
+import com.example.duynguyen.amashop.model.User;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -44,6 +50,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private Integer mColorBtnUnfocusId;
     private String mCurrentUserId;
 
+    private DatabaseReference mDatabase;
 
     public final static String PRODUCT_EXTRA = "product";
     public final static String AMOUNT_EXTRA = "amount";
@@ -101,6 +108,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             product = intent.getParcelableExtra(PRODUCT_EXTRA);
             mCurrentUserId = intent.getStringExtra(USER_ID_EXTRA);
         }
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
         setUpToolbar();
         setupView();
 
@@ -165,6 +174,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             amountSpinner.setSelection(mCurrentAmount - 1);
         }
         amountSpinner.setOnItemSelectedListener(this);
+        addButton.setOnClickListener(this);
 
     }
 
@@ -191,6 +201,36 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         this.mColorBtnUnfocusId = focusButton.getId();
     }
 
+    private void writeNewOrder(String userId, Order order) {
+
+        mDatabase.child("carts").child(userId).push().setValue(order);
+    }
+
+    private Order createValidOrder () {
+        if (mCurrentColorIndex == -1 && !product.getProductColors().isEmpty()){
+            AlertDialog.Builder dialog = new AlertDialog.Builder(DetailActivity.this);
+            dialog.setCancelable(true);
+            dialog.setTitle("Warning");
+            dialog.setMessage("Please pick product color before adding to your cart.");
+//            dialog.setPositiveButton(getString(R.string.reload_button), new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int id) {
+//                    loadMovieData(TOP_RATED_TYPE);
+//                }
+//            });
+            final AlertDialog alert = dialog.create();
+            alert.show();
+            return null;
+        }
+        else{
+            String name = product.getName();
+            Double price = Double.parseDouble(product.getPrice());
+            Integer amount = mCurrentAmount;
+            String imageLink = product.getImageLink();
+            String productColor = (product.getProductColors().isEmpty()) ? null : product.getProductColors().get(mCurrentColorIndex).getColourName();
+            return new Order(name,price,amount,imageLink,productColor);
+        }
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -215,6 +255,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 mCurrentColorIndex = i;
                 setFocus(this.mColorBtnUnfocusId, colorButtonIds.get(i));
             }
+        }
+        switch (id){
+            case R.id.add_cart_button:
+
+
+                Order order = createValidOrder();
+                if (order!=null) {
+                    Toast.makeText(this, "Successfully add a new order in your cart.", Toast.LENGTH_SHORT).show();
+                    writeNewOrder(mCurrentUserId, order);
+                }
+                break;
         }
     }
 
