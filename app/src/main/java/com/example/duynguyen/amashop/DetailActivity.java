@@ -12,17 +12,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.model.ProductColor;
-import com.ramotion.fluidslider.FluidSlider;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,11 +33,13 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class DetailActivity extends AppCompatActivity implements View.OnClickListener {
+public class DetailActivity extends AppCompatActivity implements View.OnClickListener,AdapterView.OnItemSelectedListener {
 
     public final static String TAG = DetailActivity.class.getSimpleName();
     public final static String PRODUCT_EXTRA = "product";
     private Product product;
+    private int currentAmount;
+    private int currentColorIndex;
     private ArrayList<Integer> colorButtonIds = new ArrayList<>();
     private Integer colorBtnUnfocusId;
 
@@ -53,8 +57,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     TextView descriptionTv;
     @BindView(R.id.colors_ll)
     LinearLayout colorsLl;
-    @BindView(R.id.fluidSlider)
-    FluidSlider fluidSlider;
+    @BindView(R.id.spinner)
+    Spinner amountSpinner;
     @BindView(R.id.add_cart_button)
     Button addButton;
     @BindView((R.id.color_title_tv))
@@ -92,7 +96,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         descriptionTv.setText(product.getDescription());
 
         List<ProductColor> colors = product.getProductColors();
-        if (colors.size()==0){
+        if (colors.size() == 0) {
             colorTitleTv.setVisibility(View.GONE);
         }
         colorButtonIds = new ArrayList<>();
@@ -122,6 +126,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         if (colors.size() != 0) {
             colorBtnUnfocusId = colorButtonIds.get(0);
         }
+
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.amount, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        amountSpinner.setAdapter(adapter);
+        amountSpinner.setOnItemSelectedListener(this);
 
     }
 
@@ -169,8 +179,20 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         for (int i = 0; i < colorButtonIds.size(); i++) {
             if (id == colorButtonIds.get(i)) {
                 Toast.makeText(this, "Button is selected", Toast.LENGTH_SHORT).show();
-                setFocus(this.colorBtnUnfocusId,colorButtonIds.get(i));
+                currentColorIndex = i;
+                setFocus(this.colorBtnUnfocusId, colorButtonIds.get(i));
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        currentAmount = position+1;
+        Toast.makeText(this,"The item amount is "+ String.valueOf(currentAmount),Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
