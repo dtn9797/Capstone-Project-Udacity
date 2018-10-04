@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity implements NavigationHost {
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new SigninFragment())
+                    .add(R.id.container, new ProductCatalogueFragment())
                     .commit();
         }
     }
@@ -52,12 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationHost {
                     .build();
             GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(getApplicationContext(),gso);
 
-            googleSignInClient.signOut().addOnCompleteListener(this, new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    navigateTo(new SigninFragment(),false);
-                }
-            });
+
         }
         else {
             getSupportFragmentManager().popBackStack();
