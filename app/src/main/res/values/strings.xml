@@ -33,7 +33,7 @@
     <string name="colors_title">Colors</string>
     <string name="detail_activity_title">Product Detail</string>
     <string name="close_on_intent_error">No data is found</string>
-
+    <string name="cart_title">Order Details</string>
     <string-array name="amount">
         <item>1</item>
         <item>2</item>
@@ -42,4 +42,7 @@
         <item>5</item>
         <item>6</item>
     </string-array>
+    <!--fragment_cart-->
+    <string name="order_color_title">Color: %s</string>
+    <string name="order_amount_title">Amount: %d</string>
 </resources>
