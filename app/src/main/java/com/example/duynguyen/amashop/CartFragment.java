@@ -1,5 +1,7 @@
 package com.example.duynguyen.amashop;
 
+import android.app.Activity;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,15 +12,20 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.duynguyen.amashop.model.Order;
+import com.example.duynguyen.amashop.utils.OnCartFabClickListener;
 import com.example.duynguyen.amashop.utils.OrderAdapter;
 import com.google.firebase.database.DatabaseReference;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartFragment extends Fragment{
+public class CartFragment extends Fragment implements OnCartFabClickListener{
     @BindView(R.id.orders_rv)
     RecyclerView ordersRv;
+    OrderAdapter orderAdapter;
 
     private DatabaseReference mDataBase;
     private String mCurrentUserId;
@@ -30,11 +37,23 @@ public class CartFragment extends Fragment{
         ButterKnife.bind(this, view);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        OrderAdapter orderAdapter = new OrderAdapter(getContext());
+        orderAdapter = new OrderAdapter(getContext());
         ordersRv.setAdapter(orderAdapter);
         ordersRv.setLayoutManager(linearLayoutManager);
 
         return view;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        ((DetailActivity)getActivity()).registerCallback(this);
+    }
+
+    @Override
+    public void OnCartFabClick(List<Order> orders) {
+        orderAdapter.setData(orders);
     }
 
     //    private void readCurrentUser (String userId){

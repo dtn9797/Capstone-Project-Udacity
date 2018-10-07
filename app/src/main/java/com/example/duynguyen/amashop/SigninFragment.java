@@ -102,7 +102,7 @@ public class SigninFragment extends Fragment implements View.OnClickListener {
             Toast.makeText(getContext(),"Sign in Failed",Toast.LENGTH_LONG).show();
         }
         else {
-            Toast.makeText(getContext(),"Sign in Sucess",Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(),"Sign in Success",Toast.LENGTH_LONG).show();
             writeNewUser(currentUser.getId(),currentUser.getDisplayName(),currentUser.getEmail());
             Bundle bundle = new Bundle();
             bundle.putString(ProductCatalogueFragment.USER_ID_EXTRA,currentUser.getId());

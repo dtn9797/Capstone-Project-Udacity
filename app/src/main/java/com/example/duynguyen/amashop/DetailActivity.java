@@ -32,6 +32,7 @@ import com.example.duynguyen.amashop.model.Order;
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.model.ProductColor;
 import com.example.duynguyen.amashop.model.User;
+import com.example.duynguyen.amashop.utils.OnCartFabClickListener;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
@@ -53,6 +54,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private String mCurrentUserId;
 
     private DatabaseReference mDatabase;
+    public OnCartFabClickListener mCallback;
 
     public final static String PRODUCT_EXTRA = "product";
     public final static String AMOUNT_EXTRA = "amount";
@@ -113,6 +115,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             }
             product = intent.getParcelableExtra(PRODUCT_EXTRA);
             mCurrentUserId = intent.getStringExtra(USER_ID_EXTRA);
+
         }
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -120,8 +123,13 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         setupView(savedInstanceState);
 
 
+
     }
 
+
+    public void registerCallback (OnCartFabClickListener onCartFabClickListener){
+        mCallback = onCartFabClickListener;
+    }
     private void setupView(Bundle saveInstanceState) {
         Picasso.get().load(product.getImageLink()).into(productIv);
         titleTv.setText(product.getName());
@@ -281,6 +289,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "FAB is clicked", Toast.LENGTH_SHORT).show();
                 if ((cartFm.getVisibility() == View.INVISIBLE)) {
                     cartFm.setVisibility(View.VISIBLE);
+                    List<Order> orders= new ArrayList<>();
+                    orders.add(createValidOrder());
+                    mCallback.OnCartFabClick(orders);
                 } else {
                     cartFm.setVisibility(View.INVISIBLE);
                 }
