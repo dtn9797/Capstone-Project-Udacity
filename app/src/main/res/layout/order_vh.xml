@@ -6,6 +6,7 @@
 
     <ImageView
         android:id="@+id/order_image_iv"
+        android:contentDescription="@string/product_image_description"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
@@ -21,7 +22,7 @@
         android:layout_marginStart="8dp"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/delete_order_iv">
+        app:layout_constraintStart_toEndOf="@+id/order_image_iv">
 
         <TextView
             android:id="@+id/order_name_tv"
@@ -50,8 +51,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:textSize="15sp"
-            android:text="$200.00" />
+            android:text="$200.00"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <ImageView

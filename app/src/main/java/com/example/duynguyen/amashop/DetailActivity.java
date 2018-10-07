@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -78,8 +80,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     Spinner amountSpinner;
     @BindView(R.id.add_cart_button)
     Button addButton;
-    @BindView((R.id.color_title_tv))
+    @BindView(R.id.color_title_tv)
     TextView colorTitleTv;
+    @BindView(R.id.cart_fab)
+    FloatingActionButton cartFab;
+    @BindView(R.id.cart_fm)
+    FrameLayout cartFm;
 
 
     @Override
@@ -111,12 +117,12 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setUpToolbar();
-        setupView();
+        setupView(savedInstanceState);
 
 
     }
 
-    private void setupView() {
+    private void setupView(Bundle saveInstanceState) {
         Picasso.get().load(product.getImageLink()).into(productIv);
         titleTv.setText(product.getName());
         String price = String.format(getResources().getString(R.string.detail_price_sample), product.getPrice());
@@ -162,7 +168,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             if (mCurrentColorIndex == i) {
                 setFocus(mColorBtnUnfocusId, colorButtonId);
             }
-
         }
 
 
@@ -175,6 +180,14 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
         amountSpinner.setOnItemSelectedListener(this);
         addButton.setOnClickListener(this);
+        cartFab.setOnClickListener(this);
+
+        //add cart fragment
+        if(saveInstanceState==null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.cart_fm, new CartFragment())
+                    .commit();
+        }
 
     }
 
@@ -258,14 +271,19 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         }
         switch (id){
             case R.id.add_cart_button:
-
-
                 Order order = createValidOrder();
                 if (order!=null) {
                     Toast.makeText(this, "Successfully add a new order in your cart.", Toast.LENGTH_SHORT).show();
                     writeNewOrder(mCurrentUserId, order);
                 }
                 break;
+            case R.id.cart_fab:
+                Toast.makeText(this, "FAB is clicked", Toast.LENGTH_SHORT).show();
+                if ((cartFm.getVisibility() == View.INVISIBLE)) {
+                    cartFm.setVisibility(View.VISIBLE);
+                } else {
+                    cartFm.setVisibility(View.INVISIBLE);
+                }
         }
     }
 
