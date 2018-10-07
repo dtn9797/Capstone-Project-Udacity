@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -33,8 +34,11 @@ import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.model.ProductColor;
 import com.example.duynguyen.amashop.model.User;
 import com.example.duynguyen.amashop.utils.OnCartFabClickListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -52,6 +56,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Integer> colorButtonIds = new ArrayList<>();
     private Integer mColorBtnUnfocusId;
     private String mCurrentUserId;
+    private List<Order> mOrders= new ArrayList<>();
 
     private DatabaseReference mDatabase;
     public OnCartFabClickListener mCallback;
@@ -121,9 +126,27 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mDatabase = FirebaseDatabase.getInstance().getReference();
         setUpToolbar();
         setupView(savedInstanceState);
+        readDatabase(mCurrentUserId);
 
 
+    }
 
+    private void readDatabase(String userId) {
+        DatabaseReference currentUserDatanase = mDatabase.child("carts").child(userId);
+        currentUserDatanase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                    mOrders.add(ds.getValue(Order.class));
+                }
+                mCallback.OnCartFabClick(mOrders);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
@@ -289,9 +312,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 Toast.makeText(this, "FAB is clicked", Toast.LENGTH_SHORT).show();
                 if ((cartFm.getVisibility() == View.INVISIBLE)) {
                     cartFm.setVisibility(View.VISIBLE);
-                    List<Order> orders= new ArrayList<>();
-                    orders.add(createValidOrder());
-                    mCallback.OnCartFabClick(orders);
                 } else {
                     cartFm.setVisibility(View.INVISIBLE);
                 }

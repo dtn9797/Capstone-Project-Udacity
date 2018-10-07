@@ -7,6 +7,9 @@ public class Order {
     private String productImage;
     private String productColor;
 
+    public Order() {
+    }
+
     public Order(String name, Double price, Integer amount, String productImage, String productColor) {
         this.name = name;
         this.price = price;

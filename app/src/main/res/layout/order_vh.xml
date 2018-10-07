@@ -2,41 +2,45 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp">
 
     <ImageView
         android:id="@+id/order_image_iv"
-        android:contentDescription="@string/product_image_description"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:contentDescription="@string/product_image_description"
         android:src="@drawable/product"
         app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/linearLayout" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
         android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/order_image_iv">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <TextView
             android:id="@+id/order_name_tv"
             style="@style/product_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Butter London" />
+
+            android:ellipsize="end"
+            android:text="Butter London sadasfsadsadasfdsfsadsadsaddasd"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/order_color_tv"
             style="@style/product_subtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Color: Butter London" />
+            android:text="Color: Butter Londondasdsadfasasdfawde" />
 
         <TextView
             android:id="@+id/order_amount_tv"
