@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.duynguyen.amashop.R;
 import com.example.duynguyen.amashop.model.Order;
@@ -87,6 +88,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
             amountTv.setText(amountText);
             priceTv.setText(String.valueOf(order.getTotalPrice()));
             //need to set delete Iv
+            deleteIv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(mContext,"close button is click",Toast.LENGTH_SHORT).show();
+                }
+            });
         }
     }
 }

@@ -5,7 +5,7 @@ public class Order {
     private Double price;
     private Integer amount;
     private String productImage;
-    private String productColor;
+    private String productColor = "";
 
     public Order() {
     }

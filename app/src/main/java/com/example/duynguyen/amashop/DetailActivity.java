@@ -1,5 +1,6 @@
 package com.example.duynguyen.amashop;
 
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,12 +35,18 @@ import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.model.ProductColor;
 import com.example.duynguyen.amashop.model.User;
 import com.example.duynguyen.amashop.utils.OnCartFabClickListener;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.identity.intents.model.UserAddress;
+import com.google.android.gms.wallet.AutoResolveHelper;
+import com.google.android.gms.wallet.CardInfo;
+import com.google.android.gms.wallet.PaymentData;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.stripe.android.model.Token;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -338,6 +345,47 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         outState.putString(USER_ID_EXTRA,mCurrentUserId);
         outState.putIntArray("SCROLL_POSITION",
                 new int[]{ parentSv.getScrollX(), parentSv.getScrollY()});
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //for payment
+        switch (requestCode) {
+            case CartFragment.LOAD_PAYMENT_DATA_REQUEST_CODE:
+                switch (resultCode) {
+                    case Activity.RESULT_OK:
+                        PaymentData paymentData = PaymentData.getFromIntent(data);
+                        // You can get some data on the user's card, such as the brand and last 4 digits
+                        CardInfo info = paymentData.getCardInfo();
+                        // You can also pull the user address from the PaymentData object.
+                        UserAddress address = paymentData.getShippingAddress();
+                        // This is the raw JSON string version of your Stripe token.
+                        String rawToken = paymentData.getPaymentMethodToken().getToken();
+
+                        // Now that you have a Stripe token object, charge that by using the id
+                        Token stripeToken = Token.fromString(rawToken);
+                        if (stripeToken != null) {
+                            // This chargeToken function is a call to your own server, which should then connect
+                            // to Stripe's API to finish the charge.
+                            Toast.makeText(this,
+                                    "Successfully got the order. (Got token " + stripeToken.toString()+ ")", Toast.LENGTH_LONG).show();
+                        }
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        break;
+                    case AutoResolveHelper.RESULT_ERROR:
+                        Status status = AutoResolveHelper.getStatusFromIntent(data);
+                        // Log the status for debugging
+                        // Generally there is no need to show an error to
+                        // the user as the Google Payment API will do that
+                        break;
+                    default:
+                        // Do nothing.
+                }
+                break; // Breaks the case LOAD_PAYMENT_DATA_REQUEST_CODE
+            // Handle any other startActivityForResult calls you may have made.
+            default:
+                // Do nothing.
+        }
     }
 
 }

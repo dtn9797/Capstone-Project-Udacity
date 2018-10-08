@@ -24,7 +24,7 @@ public class GooglePayHelper {
                         .setTransactionInfo(
                                 TransactionInfo.newBuilder()
                                         .setTotalPriceStatus(WalletConstants.TOTAL_PRICE_STATUS_FINAL)
-                                        .setTotalPrice("0.00")
+                                        .setTotalPrice("10.00")
                                         .setCurrencyCode("USD")
                                         .build())
                         .addAllowedPaymentMethod(WalletConstants.PAYMENT_METHOD_CARD)
