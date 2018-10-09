@@ -25,9 +25,16 @@ import butterknife.ButterKnife;
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
     Context mContext;
     List<Order> mData= new ArrayList<>();
+    protected  static OnDeleteClickListener mOnDeleteClickListener;
 
-    public OrderAdapter(Context mContext) {
+
+    public OrderAdapter(Context mContext, OnDeleteClickListener mOnDeleteClickListener) {
         this.mContext = mContext;
+        this.mOnDeleteClickListener = mOnDeleteClickListener;
+    }
+
+    public interface OnDeleteClickListener {
+        void onDeteleClicked (int pos);
     }
 
     public void setData (List<Order> data){
@@ -43,7 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
 
     @Override
     public void onBindViewHolder(@NonNull OrderVH holder, int position) {
-        holder.setData(mData.get(position));
+        holder.setData(mData.get(position),position);
 
     }
 
@@ -52,7 +59,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
         return mData.size();
     }
 
-    public class OrderVH extends RecyclerView.ViewHolder {
+    public class OrderVH extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.order_image_iv)
         ImageView imageIv;
         @BindView(R.id.order_name_tv)
@@ -65,6 +72,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
         TextView priceTv;
         @BindView(R.id.delete_order_iv)
         ImageView deleteIv;
+        int mPos;
 
 
         public OrderVH(View itemView) {
@@ -72,7 +80,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
             ButterKnife.bind(this, itemView);
         }
 
-        public void setData (Order order){
+        public void setData (Order order, final int pos){
             Picasso.get().load(order.getProductImage()).into(imageIv);
             nameTv.setText(order.getName());
             String colorText = order.getProductColor();
@@ -88,12 +96,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
             amountTv.setText(amountText);
             priceTv.setText(String.valueOf(order.getTotalPrice()));
             //need to set delete Iv
-            deleteIv.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(mContext,"close button is click",Toast.LENGTH_SHORT).show();
-                }
-            });
+            deleteIv.setOnClickListener(this);
+            mPos=pos;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (v.getId() == R.id.delete_order_iv){
+                mOnDeleteClickListener.onDeteleClicked(mPos);
+            }
         }
     }
 }

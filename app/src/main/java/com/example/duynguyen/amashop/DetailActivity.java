@@ -62,7 +62,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private int mCurrentColorIndex = -1;
     private ArrayList<Integer> colorButtonIds = new ArrayList<>();
     private Integer mColorBtnUnfocusId;
-    private String mCurrentUserId;
+    public static String mCurrentUserId;
     private List<Order> mOrders= new ArrayList<>();
 
     private DatabaseReference mDatabase;
@@ -143,9 +143,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         currentUserDatanase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Order> orders = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()){
-                    mOrders.add(ds.getValue(Order.class));
+                    orders.add(ds.getValue(Order.class));
                 }
+                mOrders = orders;
                 mCallback.OnCartFabClick(mOrders);
             }
 
@@ -253,8 +255,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void writeNewOrder(String userId, Order order) {
-
-        mDatabase.child("carts").child(userId).push().setValue(order);
+        String key = mDatabase.child("carts").child(userId).push().getKey();
+        order.setKey(key);
+        mDatabase.child("carts").child(userId).child(order.getKey()).setValue(order);
     }
 
     private Order createValidOrder () {
