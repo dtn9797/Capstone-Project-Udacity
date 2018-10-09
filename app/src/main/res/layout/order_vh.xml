@@ -63,6 +63,7 @@
     <ImageView
         android:contentDescription="@string/close_button_description"
         android:id="@+id/delete_order_iv"
+        android:elevation="2dp"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:src="@drawable/ic_close_black_24dp"

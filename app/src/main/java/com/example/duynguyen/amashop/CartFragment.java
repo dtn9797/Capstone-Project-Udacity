@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,6 +48,8 @@ public class CartFragment extends Fragment implements OnCartFabClickListener,Ord
     TextView totalPriceTv;
     @BindView(R.id.pay_btn)
     ImageButton payBtn;
+    @BindView(R.id.cart_close_iv)
+    ImageView closeBtn;
 
     private OrderAdapter orderAdapter;
     private List<Order> mOrders = new ArrayList<>();
@@ -59,7 +62,7 @@ public class CartFragment extends Fragment implements OnCartFabClickListener,Ord
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cart, container, false);
+        final View view = inflater.inflate(R.layout.fragment_cart, container, false);
         ButterKnife.bind(this, view);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -87,6 +90,13 @@ public class CartFragment extends Fragment implements OnCartFabClickListener,Ord
                         }
                     }
                 });
+
+        closeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((DetailActivity)getActivity()).toggleCartFragment();
+            }
+        });
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
@@ -126,7 +136,7 @@ public class CartFragment extends Fragment implements OnCartFabClickListener,Ord
     @Override
     public void onDeteleClicked(int pos) {
         Toast.makeText(getContext(),"close button is click at "+ String.valueOf(pos),Toast.LENGTH_SHORT).show();
-        mDatabase.child("carts").child(DetailActivity.mCurrentUserId).child(mOrders.get(pos).getKey()).removeValue();
+        mDatabase.child("carts").child(((DetailActivity) getActivity()).getCurrentUserId()).child(mOrders.get(pos).getKey()).removeValue();
         mOrders.remove(pos);
     }
 

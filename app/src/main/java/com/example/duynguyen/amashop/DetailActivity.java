@@ -1,11 +1,11 @@
 package com.example.duynguyen.amashop;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -33,7 +33,6 @@ import android.widget.Toast;
 import com.example.duynguyen.amashop.model.Order;
 import com.example.duynguyen.amashop.model.Product;
 import com.example.duynguyen.amashop.model.ProductColor;
-import com.example.duynguyen.amashop.model.User;
 import com.example.duynguyen.amashop.utils.OnCartFabClickListener;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.identity.intents.model.UserAddress;
@@ -63,7 +62,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     private ArrayList<Integer> colorButtonIds = new ArrayList<>();
     private Integer mColorBtnUnfocusId;
     public static String mCurrentUserId;
-    private List<Order> mOrders= new ArrayList<>();
+    private List<Order> mOrders = new ArrayList<>();
+    private int mCartVisibility = 0;
 
     private DatabaseReference mDatabase;
     public OnCartFabClickListener mCallback;
@@ -73,6 +73,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public final static String COLOR_INDEX_EXTRA = "color";
     public final static String SCROLL_POSITION_EXTRA = "scroll";
     public static final String USER_ID_EXTRA = "id";
+    public static final String ORDERS_EXTRA = "orders";
+    public static final String CART_V_EXTRA = "cart";
+
 
     @BindView(R.id.app_bar)
     Toolbar toolbar;
@@ -113,14 +116,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             mCurrentAmount = savedInstanceState.getInt(AMOUNT_EXTRA);
             mCurrentColorIndex = savedInstanceState.getInt(COLOR_INDEX_EXTRA);
             mCurrentUserId = savedInstanceState.getString(USER_ID_EXTRA);
+            mOrders = savedInstanceState.getParcelableArrayList(ORDERS_EXTRA);
+            mCartVisibility = savedInstanceState.getInt(CART_V_EXTRA);
             final int[] scrollPositions = savedInstanceState.getIntArray(SCROLL_POSITION_EXTRA);
-            if(scrollPositions != null)
+            if (scrollPositions != null)
                 parentSv.post(new Runnable() {
                     public void run() {
                         parentSv.scrollTo(scrollPositions[0], scrollPositions[1]);
                     }
                 });
-        }else {
+        } else {
             Intent intent = getIntent();
             if (intent == null) {
                 closeOnError();
@@ -144,7 +149,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<Order> orders = new ArrayList<>();
-                for (DataSnapshot ds : dataSnapshot.getChildren()){
+                for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     orders.add(ds.getValue(Order.class));
                 }
                 mOrders = orders;
@@ -159,8 +164,19 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     }
 
 
-    public void registerCallback (OnCartFabClickListener onCartFabClickListener){
+    public void registerCallback(OnCartFabClickListener onCartFabClickListener) {
         mCallback = onCartFabClickListener;
+    }
+
+    public void toggleCartFragment (){
+        if (cartFm.getVisibility() == View.VISIBLE){
+            cartFm.setVisibility(View.GONE);
+            mCartVisibility = 0;
+        }
+        else {
+            cartFm.setVisibility(View.VISIBLE);
+            mCartVisibility = 1;
+        }
     }
     private void setupView(Bundle saveInstanceState) {
         Picasso.get().load(product.getImageLink()).into(productIv);
@@ -194,7 +210,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             Integer colorButtonId = View.generateViewId();
             colorButton.setId(colorButtonId);
             colorButtonIds.add(colorButtonId);
-            if(i==0) {
+            if (i == 0) {
                 mColorBtnUnfocusId = colorButtonIds.get(0);
             }
 
@@ -208,6 +224,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             if (mCurrentColorIndex == i) {
                 setFocus(mColorBtnUnfocusId, colorButtonId);
             }
+
+            if (mCartVisibility == 1){
+                cartFm.setVisibility(View.VISIBLE);
+            }
+
         }
 
 
@@ -223,7 +244,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         cartFab.setOnClickListener(this);
 
         //add cart fragment
-        if(saveInstanceState==null) {
+        if (saveInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.cart_fm, new CartFragment())
                     .commit();
@@ -260,8 +281,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mDatabase.child("carts").child(userId).child(order.getKey()).setValue(order);
     }
 
-    private Order createValidOrder () {
-        if (mCurrentColorIndex == -1 && !product.getProductColors().isEmpty()){
+    private Order createValidOrder() {
+        if (mCurrentColorIndex == -1 && !product.getProductColors().isEmpty()) {
             AlertDialog.Builder dialog = new AlertDialog.Builder(DetailActivity.this);
             dialog.setCancelable(true);
             dialog.setTitle("Warning");
@@ -275,16 +296,20 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             final AlertDialog alert = dialog.create();
             alert.show();
             return null;
-        }
-        else{
+        } else {
             String name = product.getName();
             Double price = Double.parseDouble(product.getPrice());
             Integer amount = mCurrentAmount;
             String imageLink = product.getImageLink();
             String productColor = (product.getProductColors().isEmpty()) ? null : product.getProductColors().get(mCurrentColorIndex).getColourName();
-            return new Order(name,price,amount,imageLink,productColor);
+            return new Order(name, price, amount, imageLink, productColor);
         }
     }
+
+    public static String getCurrentUserId() {
+        return mCurrentUserId;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
@@ -310,21 +335,17 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 setFocus(this.mColorBtnUnfocusId, colorButtonIds.get(i));
             }
         }
-        switch (id){
+        switch (id) {
             case R.id.add_cart_button:
                 Order order = createValidOrder();
-                if (order!=null) {
+                if (order != null) {
                     Toast.makeText(this, "Successfully add a new order in your cart.", Toast.LENGTH_SHORT).show();
                     writeNewOrder(mCurrentUserId, order);
                 }
                 break;
             case R.id.cart_fab:
                 Toast.makeText(this, "FAB is clicked", Toast.LENGTH_SHORT).show();
-                if ((cartFm.getVisibility() == View.INVISIBLE)) {
-                    cartFm.setVisibility(View.VISIBLE);
-                } else {
-                    cartFm.setVisibility(View.INVISIBLE);
-                }
+                toggleCartFragment();
         }
     }
 
@@ -345,9 +366,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         outState.putParcelable(PRODUCT_EXTRA, product);
         outState.putInt(AMOUNT_EXTRA, mCurrentAmount);
         outState.putInt(COLOR_INDEX_EXTRA, mCurrentColorIndex);
-        outState.putString(USER_ID_EXTRA,mCurrentUserId);
+        outState.putString(USER_ID_EXTRA, mCurrentUserId);
+        outState.putParcelableArrayList(ORDERS_EXTRA, (ArrayList<? extends Parcelable>) mOrders);
+        outState.putInt(CART_V_EXTRA,mCartVisibility);
         outState.putIntArray("SCROLL_POSITION",
-                new int[]{ parentSv.getScrollX(), parentSv.getScrollY()});
+                new int[]{parentSv.getScrollX(), parentSv.getScrollY()});
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -370,7 +393,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                             // This chargeToken function is a call to your own server, which should then connect
                             // to Stripe's API to finish the charge.
                             Toast.makeText(this,
-                                    "Successfully got the order. (Got token " + stripeToken.toString()+ ")", Toast.LENGTH_LONG).show();
+                                    "Successfully got the order. (Got token " + stripeToken.toString() + ")", Toast.LENGTH_LONG).show();
                         }
                         break;
                     case Activity.RESULT_CANCELED:
