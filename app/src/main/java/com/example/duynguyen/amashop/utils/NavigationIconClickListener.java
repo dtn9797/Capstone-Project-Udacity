@@ -29,13 +29,13 @@ public class NavigationIconClickListener implements View.OnClickListener {
     private Drawable closeIcon;
     private View mView;
 
-    public NavigationIconClickListener(Context context, View sheet,Drawable openIcon,Drawable closeIcon,boolean backdropShown) {
-        this(context, sheet, null, openIcon,closeIcon, backdropShown);
+    public NavigationIconClickListener(Context context, View sheet, Drawable openIcon, Drawable closeIcon, boolean backdropShown) {
+        this(context, sheet, null, openIcon, closeIcon, backdropShown);
     }
 
     NavigationIconClickListener(
             Context context, View sheet, @Nullable Interpolator interpolator,
-            @Nullable Drawable openIcon, @Nullable Drawable closeIcon, @Nullable boolean backdropShown) {
+            @Nullable Drawable openIcon, @Nullable Drawable closeIcon, boolean backdropShown) {
         this.context = context;
         this.sheet = sheet;
         this.interpolator = interpolator;
@@ -48,7 +48,7 @@ public class NavigationIconClickListener implements View.OnClickListener {
         height = displayMetrics.heightPixels;
     }
 
-    public void click () {
+    public void click() {
         performAnimate(null);
     }
 

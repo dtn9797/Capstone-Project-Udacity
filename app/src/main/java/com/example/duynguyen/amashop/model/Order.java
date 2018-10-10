@@ -69,8 +69,9 @@ public class Order implements Parcelable {
     public String getProductColor() {
         return productColor;
     }
-    public Double getTotalPrice () {
-        return price*amount;
+
+    public Double getTotalPrice() {
+        return price * amount;
     }
 
     @Override

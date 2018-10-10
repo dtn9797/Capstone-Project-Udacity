@@ -7,7 +7,7 @@
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
         <item name="colorAccent">@color/secondaryColor</item>
 
-    </style >
+    </style>
 
     <style name="product_grid_title" parent="TextAppearance.AppCompat.Display1">
         <item name="android:textStyle">bold</item>
@@ -22,6 +22,7 @@
     <style name="product_title" parent="TextAppearance.AppCompat.Headline">
 
     </style>
+
     <style name="product_subtitle" parent="TextAppearance.AppCompat.Body2">
 
     </style>
@@ -37,6 +38,7 @@
         <item name="android:textColor">@color/secondaryLightColor</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="add_cart_button" parent="TextAppearance.AppCompat.Headline">
         <item name="android:textColor">@color/secondaryLightColor</item>
         <item name="android:textStyle">bold</item>

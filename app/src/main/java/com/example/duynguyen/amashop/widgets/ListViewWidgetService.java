@@ -17,13 +17,13 @@ public class ListViewWidgetService extends RemoteViewsService {
         return new AppWidgetListView(getApplicationContext());
     }
 }
+
 class AppWidgetListView implements RemoteViewsService.RemoteViewsFactory {
     private Context mContext;
-    List<Product> mProducts= new ArrayList<>();
+    List<Product> mProducts = new ArrayList<>();
 
 
-
-    public AppWidgetListView(Context mContext){
+    public AppWidgetListView(Context mContext) {
         this.mContext = mContext;
     }
 
@@ -52,10 +52,10 @@ class AppWidgetListView implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         RemoteViews remoteViews = new RemoteViews(mContext.getPackageName(), R.layout.list_item_widget);
 
-        remoteViews.setTextViewText(R.id.widget_product_title_tv,mProducts.get(position).getName());
-        remoteViews.setTextViewText(R.id.widget_product_price_tv,"$ "+mProducts.get(position).getPrice());
+        remoteViews.setTextViewText(R.id.widget_product_title_tv, mProducts.get(position).getName());
+        remoteViews.setTextViewText(R.id.widget_product_price_tv, "$ " + mProducts.get(position).getPrice());
 
-        return  remoteViews;
+        return remoteViews;
     }
 
     @Override

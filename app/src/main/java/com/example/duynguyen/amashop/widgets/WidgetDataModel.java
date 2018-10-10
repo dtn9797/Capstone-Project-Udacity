@@ -18,7 +18,7 @@ public class WidgetDataModel {
     public static String USER_ID_KEY = "id";
     public static String PRODUCTS_KEY = "p";
 
-    public static void saveType (Context context, String type){
+    public static void saveType(Context context, String type) {
 
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -26,10 +26,10 @@ public class WidgetDataModel {
         Gson gson = new Gson();
         String json = gson.toJson(type);
         prefsEditor.putString(TYPE_KEY, json);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
-    public static void saveUserId (Context context, String userId){
+    public static void saveUserId(Context context, String userId) {
 
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -37,9 +37,10 @@ public class WidgetDataModel {
         Gson gson = new Gson();
         String json = gson.toJson(userId);
         prefsEditor.putString(USER_ID_KEY, json);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
-    public static void saveProducts (Context context, List<Product> products){
+
+    public static void saveProducts(Context context, List<Product> products) {
 
         SharedPreferences appSharedPrefs = PreferenceManager
                 .getDefaultSharedPreferences(context);
@@ -47,10 +48,10 @@ public class WidgetDataModel {
         Gson gson = new Gson();
         String json = gson.toJson(products);
         prefsEditor.putString(PRODUCTS_KEY, json);
-        prefsEditor.commit();
+        prefsEditor.apply();
     }
 
-    public static String getType (Context context) {
+    public static String getType(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(TYPE_KEY, null);
@@ -59,7 +60,7 @@ public class WidgetDataModel {
         return gson.fromJson(json, type);
     }
 
-    public static List<Product> getProducts (Context context) {
+    public static List<Product> getProducts(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(PRODUCTS_KEY, null);
@@ -68,11 +69,12 @@ public class WidgetDataModel {
         return gson.fromJson(json, type);
     }
 
-    public static String getUserId (Context context){
+    public static String getUserId(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         Gson gson = new Gson();
         String json = prefs.getString(USER_ID_KEY, null);
-        Type type = new TypeToken<String>() {}.getType();
+        Type type = new TypeToken<String>() {
+        }.getType();
         return gson.fromJson(json, type);
     }
 }

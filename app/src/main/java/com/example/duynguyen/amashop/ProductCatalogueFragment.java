@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -86,8 +85,8 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         View view = inflater.inflate(R.layout.fragment_product_catalogue, container, false);
         ButterKnife.bind(this, view);
 
-        if (savedInstanceState == null){
-            mCurrentUserId = getArguments().getString(USER_ID_EXTRA);
+        if (savedInstanceState == null) {
+            mCurrentUserId = Objects.requireNonNull(getArguments()).getString(USER_ID_EXTRA);
             loadProductData(mCurrentBrand);
         }
         setUpView();
@@ -102,7 +101,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         mBrand3Bt.setOnClickListener(this);
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2, GridLayoutManager.HORIZONTAL, false);
-        mProductsAdapter = new ProductsAdapter(getContext(),this);
+        mProductsAdapter = new ProductsAdapter(getContext(), this);
         ProductGridItemDecoration productGridItemDecoration = new ProductGridItemDecoration(80, 50);
 
         mProductsRv.setLayoutManager(gridLayoutManager);
@@ -114,7 +113,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
     }
 
     private void setUpToolbar(View view) {
-        Drawable openIconId = ContextCompat.getDrawable(getContext(), R.drawable.ic_menu_black_24dp);
+        Drawable openIconId = ContextCompat.getDrawable(Objects.requireNonNull(getContext()), R.drawable.ic_menu_black_24dp);
         Drawable closeIconId = ContextCompat.getDrawable(getContext(), R.drawable.ic_close_black_24dp);
         mNavigationIconClickListener = new NavigationIconClickListener(getContext(), mProductGrid, openIconId, closeIconId, false);
         ((MainActivity) Objects.requireNonNull(getActivity())).setSupportActionBar(mToolBar);
@@ -144,7 +143,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
                 mProductsAdapter.setData((List<Product>) data);
                 Log.d(TAG, "Successfully get data ");
                 subtitleTv.setText(mCurrentBrand);
-                WidgetUpdateService.startActionUpdateListView(getActivity(), (List<Product>) data,mCurrentBrand,mCurrentUserId);
+                WidgetUpdateService.startActionUpdateListView(getActivity(), (List<Product>) data, mCurrentBrand, mCurrentUserId);
 
             }
 
@@ -178,15 +177,15 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelableArrayList(DATA_ARRAY_EXTRA, (ArrayList<? extends Parcelable>) data);
-        outState.putString(BRAND_TYPE_EXTRA,mCurrentBrand);
-        outState.putString(USER_ID_EXTRA,mCurrentUserId);
+        outState.putParcelableArrayList(DATA_ARRAY_EXTRA, data);
+        outState.putString(BRAND_TYPE_EXTRA, mCurrentBrand);
+        outState.putString(USER_ID_EXTRA, mCurrentUserId);
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        if (savedInstanceState!=null){
+        if (savedInstanceState != null) {
             data = savedInstanceState.getParcelableArrayList(DATA_ARRAY_EXTRA);
             mCurrentBrand = savedInstanceState.getString(BRAND_TYPE_EXTRA);
             mProductsAdapter.setData((List<Product>) data);
@@ -207,7 +206,7 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
         int id = item.getItemId();
         switch (id) {
             case R.id.sign_out_button:
-                ((NavigationHost) getActivity()).navigateBack(true);
+                ((NavigationHost) Objects.requireNonNull(getActivity())).navigateBack(true);
                 return true;
         }
 
@@ -237,9 +236,9 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onProductItemClick(int pos) {
-        Toast.makeText(getContext(),"Product Item is clicked at "+pos,Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(getActivity(),DetailActivity.class);
-        intent.putExtra(DetailActivity.PRODUCT_EXTRA, (Parcelable) data.get(pos));
+        Toast.makeText(getContext(), "Product Item is clicked at " + pos, Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(getActivity(), DetailActivity.class);
+        intent.putExtra(DetailActivity.PRODUCT_EXTRA, data.get(pos));
         intent.putExtra(DetailActivity.USER_ID_EXTRA, mCurrentUserId);
         startActivity(intent);
     }

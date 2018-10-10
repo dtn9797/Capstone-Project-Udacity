@@ -20,7 +20,7 @@ public class NewAppWidget extends AppWidgetProvider {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         String typeName = WidgetDataModel.getType(context);
-        if (typeName!=null) {
+        if (typeName != null) {
             widgetText = typeName;
         }
         // Construct the RemoteViews object
@@ -30,11 +30,11 @@ public class NewAppWidget extends AppWidgetProvider {
         //Create an intent
         Intent intent = new Intent(context, MainActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
-        views.setOnClickPendingIntent(R.id.brand_name,pendingIntent);
+        views.setOnClickPendingIntent(R.id.brand_name, pendingIntent);
 
         //show data in listview
         Intent intentService = new Intent(context, ListViewWidgetService.class);
-        views.setRemoteAdapter(R.id.products_list,intentService);
+        views.setRemoteAdapter(R.id.products_list, intentService);
 
         //empty view
 //        views.setEmptyView(R.id.products_list,R.id.empty_view);
@@ -46,14 +46,15 @@ public class NewAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        WidgetUpdateService.startActionUpdateListView(context,null,null,null);
+        WidgetUpdateService.startActionUpdateListView(context, null, null, null);
     }
 
-    public static void updateAppWidgets (Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
+    public static void updateAppWidgets(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         for (int appWidgetId : appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
+
     @Override
     public void onEnabled(Context context) {
         // Enter relevant functionality for when the first widget is created

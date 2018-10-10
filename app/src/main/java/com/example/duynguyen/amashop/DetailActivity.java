@@ -49,6 +49,7 @@ import com.stripe.android.model.Token;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -64,6 +65,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     public static String mCurrentUserId;
     private List<Order> mOrders = new ArrayList<>();
     private int mCartVisibility = 0;
+    private CartFragment mCartFragment;
 
     private DatabaseReference mDatabase;
     public OnCartFabClickListener mCallback;
@@ -130,7 +132,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
             if (intent == null) {
                 closeOnError();
             }
-            product = intent.getParcelableExtra(PRODUCT_EXTRA);
+            product = Objects.requireNonNull(intent).getParcelableExtra(PRODUCT_EXTRA);
             mCurrentUserId = intent.getStringExtra(USER_ID_EXTRA);
 
         }
@@ -168,16 +170,16 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         mCallback = onCartFabClickListener;
     }
 
-    public void toggleCartFragment (){
-        if (cartFm.getVisibility() == View.VISIBLE){
+    public void toggleCartFragment() {
+        if (cartFm.getVisibility() == View.VISIBLE) {
             cartFm.setVisibility(View.GONE);
             mCartVisibility = 0;
-        }
-        else {
+        } else {
             cartFm.setVisibility(View.VISIBLE);
             mCartVisibility = 1;
         }
     }
+
     private void setupView(Bundle saveInstanceState) {
         Picasso.get().load(product.getImageLink()).into(productIv);
         titleTv.setText(product.getName());
@@ -225,7 +227,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 setFocus(mColorBtnUnfocusId, colorButtonId);
             }
 
-            if (mCartVisibility == 1){
+            if (mCartVisibility == 1) {
                 cartFm.setVisibility(View.VISIBLE);
             }
 
@@ -245,8 +247,9 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
 
         //add cart fragment
         if (saveInstanceState == null) {
+            mCartFragment = new CartFragment();
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.cart_fm, new CartFragment())
+                    .add(R.id.cart_fm, mCartFragment)
                     .commit();
         }
 
@@ -262,6 +265,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().remove(mCartFragment).commit();
                 finish();
             }
         });
@@ -368,7 +372,7 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         outState.putInt(COLOR_INDEX_EXTRA, mCurrentColorIndex);
         outState.putString(USER_ID_EXTRA, mCurrentUserId);
         outState.putParcelableArrayList(ORDERS_EXTRA, (ArrayList<? extends Parcelable>) mOrders);
-        outState.putInt(CART_V_EXTRA,mCartVisibility);
+        outState.putInt(CART_V_EXTRA, mCartVisibility);
         outState.putIntArray("SCROLL_POSITION",
                 new int[]{parentSv.getScrollX(), parentSv.getScrollY()});
     }
@@ -381,11 +385,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                     case Activity.RESULT_OK:
                         PaymentData paymentData = PaymentData.getFromIntent(data);
                         // You can get some data on the user's card, such as the brand and last 4 digits
-                        CardInfo info = paymentData.getCardInfo();
+                        CardInfo info = Objects.requireNonNull(paymentData).getCardInfo();
                         // You can also pull the user address from the PaymentData object.
                         UserAddress address = paymentData.getShippingAddress();
                         // This is the raw JSON string version of your Stripe token.
-                        String rawToken = paymentData.getPaymentMethodToken().getToken();
+                        String rawToken = Objects.requireNonNull(paymentData.getPaymentMethodToken()).getToken();
 
                         // Now that you have a Stripe token object, charge that by using the id
                         Token stripeToken = Token.fromString(rawToken);

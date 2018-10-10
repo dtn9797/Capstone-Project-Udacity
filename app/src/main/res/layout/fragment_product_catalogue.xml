@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="37dp"
             android:text="@string/polish_brand_2" />
+
         <Button
             android:id="@+id/polish_brand_3_bt"
             style="@style/menu_item"
@@ -63,6 +64,7 @@
         android:layout_marginTop="56dp"
         android:elevation="8dp"
         android:orientation="vertical">
+
         <TextView
             android:id="@+id/product_grid_subtitle_tv"
             style="@style/product_grid_subtitle"

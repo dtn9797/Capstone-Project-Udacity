@@ -6,17 +6,18 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:orientation="horizontal" android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp">
 
         <TextView
             android:id="@+id/widget_product_title_tv"
             android:text="@string/brand_name_sample"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:gravity="start"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/widget_product_price_tv"
@@ -25,8 +26,7 @@
             android:layout_height="wrap_content"
             android:gravity="end"
             android:layout_weight="1"
-            android:textStyle="bold"
-            />
+            android:textStyle="bold" />
 
     </LinearLayout>
 

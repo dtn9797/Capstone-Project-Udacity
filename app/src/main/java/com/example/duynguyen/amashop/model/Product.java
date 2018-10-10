@@ -1,13 +1,13 @@
-
 package com.example.duynguyen.amashop.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Product implements Parcelable {
 
@@ -272,7 +272,7 @@ public class Product implements Parcelable {
         this.updatedAt = in.readString();
         this.productApiUrl = in.readString();
         this.apiFeaturedImage = in.readString();
-        this.productColors = new ArrayList<ProductColor>();
+        this.productColors = new ArrayList<>();
         in.readList(this.productColors, ProductColor.class.getClassLoader());
     }
 

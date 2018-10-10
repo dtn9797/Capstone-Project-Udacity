@@ -14,15 +14,15 @@
     <string name="product_subtitle_sample">Mov adwafafjahhaksdj</string>
 
     <!--fragment_product_catalogue-->
-    <string name="brand_name_sample">Canadian</string>
+    <string name="brand_name_sample" />
     <string name="connection_error_title">Connection Error</string>
     <string name="connection_error">Failed to get data. Check your connection!</string>
     <string name="reload_button">Reload</string>
     <!--backdrop-->
-    <string name="polish_brand_0" >Vegan</string>
-    <string name="polish_brand_1" >Natural</string>
-    <string name="polish_brand_2" >Canadian</string>
-    <string name="polish_brand_3" >Non-gmo</string>
+    <string name="polish_brand_0">Vegan</string>
+    <string name="polish_brand_1">Natural</string>
+    <string name="polish_brand_2">Canadian</string>
+    <string name="polish_brand_3">Non-gmo</string>
     <!--detail activity-->
     <string name="description_sample">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean congue maximus mauris, in congue mi efficitur ac. Suspendisse id sapien dui. Nunc orci libero, condimentum et finibus mollis, mattis imperdiet dui. Phasellus facilisis massa quam, sed blandit lacus luctus sit amet. Etiam volutpat diam quis lacus maximus, quis scelerisque diam accumsan. Phasellus et eros nulla. Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse accumsan iaculis massa vel facilisis. Suspendisse vitae tempor ex.</string>
     <string name="detail_product_title_sample">OPFIADAFADFGSD</string>
@@ -53,4 +53,8 @@
     <string name="close_button_description">Close Button</string>
     <string name="app_logo">App Logo</string>
     <string name="empty_text">Products are unavailable</string>
+    <string name="color_brand_widget">Color Brand</string>
+    <string name="total_cart_fragment">Total</string>
+    <string name="pay_button_description">Pay Button</string>
+    <string name="total_price_sample">$%s</string>
 </resources>

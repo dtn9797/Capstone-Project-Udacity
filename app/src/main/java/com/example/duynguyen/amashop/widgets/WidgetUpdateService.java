@@ -30,19 +30,19 @@ public class WidgetUpdateService extends IntentService {
                 String userId = intent.getStringExtra(WidgetDataModel.USER_ID_KEY);
                 String productType = intent.getStringExtra(WidgetDataModel.TYPE_KEY);
                 List<Product> products = intent.getParcelableArrayListExtra(WidgetDataModel.PRODUCTS_KEY);
-                handleActionUpdateListView(products,userId, productType);
+                handleActionUpdateListView(products, userId, productType);
             }
         }
     }
 
-    private void handleActionUpdateListView(List<Product> products,String userId, String productType) {
-        if(products!=null){
-            WidgetDataModel.saveProducts(this,products);
+    private void handleActionUpdateListView(List<Product> products, String userId, String productType) {
+        if (products != null) {
+            WidgetDataModel.saveProducts(this, products);
         }
-        if (userId!=null) {
+        if (userId != null) {
             WidgetDataModel.saveUserId(this, userId);
         }
-        if (productType!=null) {
+        if (productType != null) {
             WidgetDataModel.saveType(this, productType);
 
         }

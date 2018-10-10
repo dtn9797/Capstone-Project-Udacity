@@ -1,6 +1,5 @@
 package com.example.duynguyen.amashop.utils;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +8,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.duynguyen.amashop.R;
 import com.example.duynguyen.amashop.model.Order;
-import com.example.duynguyen.amashop.model.Product;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -24,8 +21,8 @@ import butterknife.ButterKnife;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
     Context mContext;
-    List<Order> mData= new ArrayList<>();
-    protected  static OnDeleteClickListener mOnDeleteClickListener;
+    List<Order> mData = new ArrayList<>();
+    protected static OnDeleteClickListener mOnDeleteClickListener;
 
 
     public OrderAdapter(Context mContext, OnDeleteClickListener mOnDeleteClickListener) {
@@ -34,23 +31,24 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
     }
 
     public interface OnDeleteClickListener {
-        void onDeteleClicked (int pos);
+        void onDeteleClicked(int pos);
     }
 
-    public void setData (List<Order> data){
+    public void setData(List<Order> data) {
         this.mData = data;
         notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public OrderVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.order_vh,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.order_vh, parent, false);
         return new OrderVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull OrderVH holder, int position) {
-        holder.setData(mData.get(position),position);
+        holder.setData(mData.get(position), position);
 
     }
 
@@ -80,13 +78,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
             ButterKnife.bind(this, itemView);
         }
 
-        public void setData (Order order, final int pos){
+        public void setData(Order order, final int pos) {
             Picasso.get().load(order.getProductImage()).into(imageIv);
             nameTv.setText(order.getName());
             String colorText = order.getProductColor();
-            if (colorText.isEmpty()){
+            if (colorText.isEmpty()) {
                 colorTv.setVisibility(View.GONE);
-            }else {
+            } else {
                 colorTv.setText(String.format(mContext.getResources().getString(R.string.order_color_title),
                         colorText));
             }
@@ -97,12 +95,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.OrderVH> {
             priceTv.setText(String.valueOf(order.getTotalPrice()));
             //need to set delete Iv
             deleteIv.setOnClickListener(this);
-            mPos=pos;
+            mPos = pos;
         }
 
         @Override
         public void onClick(View v) {
-            if (v.getId() == R.id.delete_order_iv){
+            if (v.getId() == R.id.delete_order_iv) {
                 mOnDeleteClickListener.onDeteleClicked(mPos);
             }
         }

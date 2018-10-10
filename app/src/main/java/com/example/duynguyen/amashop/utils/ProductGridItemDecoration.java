@@ -21,7 +21,7 @@ public class ProductGridItemDecoration extends RecyclerView.ItemDecoration {
 
         outRect.left = horizontalPadding;
         outRect.right = horizontalPadding;
-        outRect.bottom=verticalPadding;
-        outRect.top= verticalPadding;
+        outRect.bottom = verticalPadding;
+        outRect.top = verticalPadding;
     }
 }

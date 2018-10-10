@@ -30,7 +30,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
         void onProductItemClick(int pos);
     }
 
-    public void setData (List<Product> data){
+    public void setData(List<Product> data) {
         this.mData = data;
         notifyDataSetChanged();
     }
@@ -38,13 +38,13 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
     @NonNull
     @Override
     public ProductsVH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.product_vh,parent,false);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.product_vh, parent, false);
         return new ProductsVH(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ProductsVH holder, int position) {
-        holder.setData(mData.get(position),position);
+        holder.setData(mData.get(position), position);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.Produc
             subtitleTv = itemView.findViewById(R.id.product_subtitle_tv);
         }
 
-        public void setData (Product data, int pos){
+        public void setData(Product data, int pos) {
             Picasso.get().load(data.getImageLink()).into(imageView);
             titleTv.setText(data.getBrand());
             subtitleTv.setText(data.getName());

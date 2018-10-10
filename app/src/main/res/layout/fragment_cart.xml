@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -31,7 +30,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginTop="8dp"
             android:elevation="2dp"
-            android:contentDescription="close button"
+            android:contentDescription="@string/close_button_description"
             android:src="@drawable/ic_close_black_24dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -41,7 +40,7 @@
         android:id="@+id/orders_rv"
         android:layout_marginStart="20dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -56,7 +55,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Total"
+            android:text="@string/total_cart_fragment"
             app:layout_constraintBottom_toTopOf="@+id/total_price_tv"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -68,13 +67,13 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginStart="8dp"
-            android:text="$0"
+            android:text="@string/order_price"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
         <ImageButton
             android:id="@+id/pay_btn"
-            android:contentDescription="Pay Button"
+            android:contentDescription="@string/pay_button_description"
             android:layout_width="72dp"
             android:layout_height="46dp"
             android:layout_marginBottom="8dp"

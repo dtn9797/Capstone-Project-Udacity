@@ -12,19 +12,22 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
+
         <service
             android:name=".widgets.ListViewWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
-        <service android:name=".widgets.WidgetUpdateService"/>
+        <service android:name=".widgets.WidgetUpdateService" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DetailActivity"/>
+        <activity android:name=".DetailActivity" />
 
         <receiver android:name=".widgets.NewAppWidget">
             <intent-filter>

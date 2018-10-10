@@ -1,4 +1,3 @@
-
 package com.example.duynguyen.amashop.model;
 
 import android.os.Parcel;
