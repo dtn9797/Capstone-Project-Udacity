@@ -325,7 +325,11 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add_product_button) {
-            Log.d(TAG, "Add product button is clicked");
+            Order order = createValidOrder();
+            if (order != null) {
+                Toast.makeText(this, "Successfully add a new order in your cart.", Toast.LENGTH_SHORT).show();
+                writeNewOrder(mCurrentUserId, order);
+            }
         }
         return super.onOptionsItemSelected(item);
     }
