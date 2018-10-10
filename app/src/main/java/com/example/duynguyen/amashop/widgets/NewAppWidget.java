@@ -19,6 +19,10 @@ public class NewAppWidget extends AppWidgetProvider {
                                 int appWidgetId) {
 
         CharSequence widgetText = context.getString(R.string.appwidget_text);
+        String typeName = WidgetDataModel.getType(context);
+        if (typeName!=null) {
+            widgetText = typeName;
+        }
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.new_app_widget);
         views.setTextViewText(R.id.brand_name, widgetText);
@@ -28,8 +32,12 @@ public class NewAppWidget extends AppWidgetProvider {
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
         views.setOnClickPendingIntent(R.id.brand_name,pendingIntent);
 
+        //show data in listview
+        Intent intentService = new Intent(context, ListViewWidgetService.class);
+        views.setRemoteAdapter(R.id.products_list,intentService);
+
         //empty view
-        views.setEmptyView(R.id.products_list,R.id.empty_view);
+//        views.setEmptyView(R.id.products_list,R.id.empty_view);
 
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
@@ -38,7 +46,7 @@ public class NewAppWidget extends AppWidgetProvider {
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
         // There may be multiple widgets active, so update all of them
-        updateAppWidgets(context,appWidgetManager,appWidgetIds);
+        WidgetUpdateService.startActionUpdateListView(context,null,null,null);
     }
 
     public static void updateAppWidgets (Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {

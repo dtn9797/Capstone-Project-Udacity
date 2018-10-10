@@ -12,9 +12,10 @@
         <meta-data
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
-        <!--<service-->
-            <!--android:name=".widgets.ListViewWigetService"-->
-            <!--android:permission="android.permission.BIND_REMOTEVIEWS" />-->
+        <service
+            android:name=".widgets.ListViewWidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
+        <service android:name=".widgets.WidgetUpdateService"/>
 
         <activity android:name=".MainActivity">
             <intent-filter>

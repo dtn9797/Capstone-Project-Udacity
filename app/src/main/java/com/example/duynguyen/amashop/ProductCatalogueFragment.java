@@ -34,6 +34,7 @@ import com.example.duynguyen.amashop.utils.ProductGridItemDecoration;
 import com.example.duynguyen.amashop.utils.ProductsAdapter;
 import com.example.duynguyen.amashop.utils.RetrofitClient;
 import com.example.duynguyen.amashop.utils.RetrofitInterface;
+import com.example.duynguyen.amashop.widgets.WidgetUpdateService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -142,6 +143,8 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
                 data = (ArrayList<? extends Product>) response.body();
                 mProductsAdapter.setData((List<Product>) data);
                 Log.d(TAG, "Successfully get data ");
+                subtitleTv.setText(mCurrentBrand);
+                WidgetUpdateService.startActionUpdateListView(getActivity(), (List<Product>) data,mCurrentBrand,mCurrentUserId);
 
             }
 
