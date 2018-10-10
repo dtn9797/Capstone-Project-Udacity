@@ -236,7 +236,6 @@ public class ProductCatalogueFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onProductItemClick(int pos) {
-        Toast.makeText(getContext(), "Product Item is clicked at " + pos, Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(getActivity(), DetailActivity.class);
         intent.putExtra(DetailActivity.PRODUCT_EXTRA, data.get(pos));
         intent.putExtra(DetailActivity.USER_ID_EXTRA, mCurrentUserId);

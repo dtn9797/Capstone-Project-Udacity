@@ -265,7 +265,8 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getSupportFragmentManager().beginTransaction().remove(mCartFragment).commit();
+                //getSupportFragmentManager().beginTransaction().remove(mCartFragment).commit();
+                getSupportFragmentManager().popBackStack();
                 finish();
             }
         });
@@ -334,7 +335,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
         int id = v.getId();
         for (int i = 0; i < colorButtonIds.size(); i++) {
             if (id == colorButtonIds.get(i)) {
-                Toast.makeText(this, "Button is selected", Toast.LENGTH_SHORT).show();
                 mCurrentColorIndex = i;
                 setFocus(this.mColorBtnUnfocusId, colorButtonIds.get(i));
             }
@@ -348,7 +348,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 break;
             case R.id.cart_fab:
-                Toast.makeText(this, "FAB is clicked", Toast.LENGTH_SHORT).show();
                 toggleCartFragment();
         }
     }
@@ -356,7 +355,6 @@ public class DetailActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         mCurrentAmount = position + 1;
-        Toast.makeText(this, "The item amount is " + String.valueOf(mCurrentAmount), Toast.LENGTH_SHORT).show();
     }
 
     @Override

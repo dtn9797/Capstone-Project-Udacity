@@ -35,7 +35,7 @@ import java.util.Objects;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class CartFragment extends Fragment implements OnCartFabClickListener, OrderAdapter.OnDeleteClickListener {
+public class CartFragment extends Fragment implements OnCartFabClickListener,OrderAdapter.OnDeleteClickListener {
     @BindView(R.id.orders_rv)
     RecyclerView ordersRv;
     @BindView(R.id.total_price_tv)
@@ -51,7 +51,7 @@ public class CartFragment extends Fragment implements OnCartFabClickListener, Or
     private DatabaseReference mDatabase;
 
     final public static int LOAD_PAYMENT_DATA_REQUEST_CODE = 200;
-    public static final String ORDERS_EXTRA = "order";
+    public static final String ORDERS_EXTRA ="order";
 
     @Nullable
     @Override
@@ -60,7 +60,7 @@ public class CartFragment extends Fragment implements OnCartFabClickListener, Or
         ButterKnife.bind(this, view);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        orderAdapter = new OrderAdapter(getContext(), this);
+        orderAdapter = new OrderAdapter(getContext(),this);
         ordersRv.setAdapter(orderAdapter);
         ordersRv.setLayoutManager(linearLayoutManager);
 
@@ -88,13 +88,13 @@ public class CartFragment extends Fragment implements OnCartFabClickListener, Or
         closeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((DetailActivity) getActivity()).toggleCartFragment();
+                ((DetailActivity)getActivity()).toggleCartFragment();
             }
         });
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null){
             mOrders = savedInstanceState.getParcelableArrayList(ORDERS_EXTRA);
             updateView();
         }
@@ -102,19 +102,19 @@ public class CartFragment extends Fragment implements OnCartFabClickListener, Or
         return view;
     }
 
-    private double getTotalPrice() {
-        double totalPrice = 0;
-        for (Order order : mOrders) {
-            totalPrice += order.getTotalPrice();
+    private double getTotalPrice () {
+        double totalPrice=0;
+        for (Order order : mOrders){
+            totalPrice+=order.getTotalPrice();
         }
         return totalPrice;
     }
 
-    private void updateView() {
+    private void updateView(){
         orderAdapter.setData(mOrders);
         String format = "$ %s";
         String totalPrice = String.valueOf(getTotalPrice());
-        totalPriceTv.setText(String.format(format, totalPrice));
+        totalPriceTv.setText(String.format(format,totalPrice));
 
     }
 
@@ -132,7 +132,6 @@ public class CartFragment extends Fragment implements OnCartFabClickListener, Or
 
     @Override
     public void onDeteleClicked(int pos) {
-        Toast.makeText(getContext(), "close button is click at " + String.valueOf(pos), Toast.LENGTH_SHORT).show();
         mDatabase.child("carts").child(((DetailActivity) Objects.requireNonNull(getActivity())).getCurrentUserId()).child(mOrders.get(pos).getKey()).removeValue();
         mOrders.remove(pos);
     }
